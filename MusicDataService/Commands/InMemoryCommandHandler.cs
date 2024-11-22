@@ -10,22 +10,22 @@ public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
     {
         var result = command switch
         {
-            AddSong c => Add(c),
-            UpdateSong c => Update(c),
-            DeleteSong c => Delete(c),
+            AddSongCommand c => Add(c),
+            UpdateSongCommand c => Update(c),
+            DeleteSongCommand c => Delete(c),
             _ => throw new ArgumentOutOfRangeException(nameof(command), $"Unexpected command value: {command}"),
         };
         return Task.FromResult(result);
     }
 
-    private int Add(AddSong command)
+    private int Add(AddSongCommand command)
     {
         var song = new Song(command.Id, command.Name, command.Artist, command.Album);
         _songs.Add(song);
         return 1;
     }
 
-    private int Update(UpdateSong command)
+    private int Update(UpdateSongCommand command)
     {
         var songToUpdate = _songs.Find(song => song.Id == command.Id);
         if (songToUpdate == null)
@@ -38,7 +38,7 @@ public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
         return 1;
     }
 
-    private int Delete(DeleteSong command)
+    private int Delete(DeleteSongCommand command)
     {
         var removedCount = _songs.RemoveAll(song => song.Id == command.Id);
         return removedCount;
