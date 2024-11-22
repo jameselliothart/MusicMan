@@ -2,7 +2,7 @@ using MusicDataService.Domain;
 
 namespace MusicDataService.Commands;
 
-public class InMemoryHandler(List<Song> songs) : ICommandHandler
+public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
 {
     private readonly List<Song> _songs = songs;
 
