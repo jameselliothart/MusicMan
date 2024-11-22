@@ -2,5 +2,5 @@ namespace MusicDataService.Commands;
 
 public interface ICommandHandler
 {
-    int Handle(ICommand command);
+    Task<int> Handle(ICommand command);
 }

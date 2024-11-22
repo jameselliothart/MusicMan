@@ -6,13 +6,17 @@ public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
 {
     private readonly List<Song> _songs = songs;
 
-    public int Handle(ICommand command) => command switch
+    public Task<int> Handle(ICommand command)
     {
-        AddSong c => Add(c),
-        UpdateSong c => Update(c),
-        DeleteSong c => Delete(c),
-        _ => throw new ArgumentOutOfRangeException(nameof(command), $"Unexpected command value: {command}"),
-    };
+        var result = command switch
+        {
+            AddSong c => Add(c),
+            UpdateSong c => Update(c),
+            DeleteSong c => Delete(c),
+            _ => throw new ArgumentOutOfRangeException(nameof(command), $"Unexpected command value: {command}"),
+        };
+        return Task.FromResult(result);
+    }
 
     private int Add(AddSong command)
     {
