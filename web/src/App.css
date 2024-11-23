@@ -23,6 +23,13 @@
   color: white;
 }
 
+.App-footer {
+  background-color: #282c34;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
 .App-link {
   color: #61dafb;
 }
