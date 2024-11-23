@@ -1,5 +1,5 @@
 import { ICellRendererParams } from "ag-grid-community";
-import { ISong } from "./song";
+import { ISong } from "./song.types";
 
 export const SongDeleteButton = (p: ICellRendererParams<ISong>) => {
     return <>
