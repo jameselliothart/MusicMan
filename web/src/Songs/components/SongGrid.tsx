@@ -4,7 +4,7 @@ import "ag-grid-community/styles/ag-theme-balham.css";
 import { ClientSideRowModelModule, ColDef, ModuleRegistry } from 'ag-grid-community';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { ISong } from './song.types';
+import { ISong } from '../models/song.types';
 import { SongDeleteButton } from './SongDeleteButton';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);

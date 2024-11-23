@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { defaultSongs, SongGrid } from './Songs/SongGrid';
+import { defaultSongs, SongGrid } from './Songs/components/SongGrid';
 
 function App() {
   return (
