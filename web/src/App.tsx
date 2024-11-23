@@ -18,9 +18,10 @@ function App() {
           className="App-link"
           href="https://icons8.com/icon/aKInTbkNvWT1/music-library"
           target="_blank"
+          rel="noreferrer"
         >
           Music Library
-        </a> icon by <a className="App-link" target="_blank" href="https://icons8.com">Icons8</a>
+        </a> icon by <a className="App-link" target="_blank" href="https://icons8.com" rel="noreferrer">Icons8</a>
       </footer>
     </div>
   );
