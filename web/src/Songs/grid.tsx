@@ -1,21 +1,16 @@
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-balham.css";
-import { ClientSideRowModelModule, ColDef, ICellRendererParams, ModuleRegistry } from 'ag-grid-community';
+import { ClientSideRowModelModule, ColDef, ModuleRegistry } from 'ag-grid-community';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ISong } from './song';
+import { DeleteSong } from './DeleteSong';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 interface SongGridProps {
   songs: ISong[];
-}
-
-const DeleteSong = (p: ICellRendererParams<ISong>) => {
-  return <>
-    <button onClick={ ()=>window.alert(p.value) }>--</button>
-  </>
 }
 
 export const defaultSongs: ISong[] = [
