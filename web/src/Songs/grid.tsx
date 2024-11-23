@@ -5,7 +5,7 @@ import { ClientSideRowModelModule, ColDef, ModuleRegistry } from 'ag-grid-commun
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ISong } from './song';
-import { DeleteSong } from './DeleteSong';
+import { SongDeleteButton } from './SongDeleteButton';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -30,7 +30,7 @@ export const SongGrid = ({ songs }: SongGridProps) => {
     {
       field: 'id',
       headerName: '',
-      cellRenderer: DeleteSong,
+      cellRenderer: SongDeleteButton,
     },
   ]);
 
