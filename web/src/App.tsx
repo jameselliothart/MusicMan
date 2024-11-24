@@ -76,7 +76,6 @@ function App() {
       </footer>
 
       <ToastContainer
-        position='bottom-left'
         theme='dark'
       />
 
