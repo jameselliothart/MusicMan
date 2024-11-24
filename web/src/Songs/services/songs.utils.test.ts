@@ -1,4 +1,5 @@
-import { isValidFieldValue } from "./songs.utils";
+import { ISong } from "../models/song.types";
+import { isValidFieldValue, updateSongRow } from "./songs.utils";
 
 describe('isValidFieldValue', () => {
   const maxFieldLength = 4;
@@ -27,3 +28,20 @@ describe('isValidFieldValue', () => {
     expect(actual).toBeTruthy();
   });
 });
+
+describe('updateRow', () => {
+  it('should preserve song order', () => {
+    const songs: ISong[] = [
+      { id: '04a74f30-1ac7-476c-8c8c-94f36410b9f7', artist: 'art1', album: 'debut', name: 'an ode' },
+      { id: 'bff02006-2112-422c-96da-11a7aba8d519', artist: 'art1', album: 'debut', name: 'second ode' },
+      { id: '84256690-a321-4ba2-82fc-53ff4952cb3a', artist: 'art2', album: 'first break', name: 'something different' },
+    ];
+    const updatedValue = 'updated!'
+    const updatedSong = { id: 'bff02006-2112-422c-96da-11a7aba8d519', artist: 'art1', album: updatedValue, name: 'second ode' }
+
+    const actual = updateSongRow(songs, updatedSong);
+
+    expect(actual[1].album).toEqual(updatedValue);
+    expect(actual.map(song => song.id)).toEqual(songs.map(song => song.id));
+  })
+})
