@@ -1,9 +1,8 @@
 import { ICellRendererParams } from "ag-grid-community";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ISong } from "../models/song.types";
-import { SongGridRowClickHandler } from "../models/song-grid.types";
+import { ISongRow, SongGridRowClickHandler } from "../models/song-grid.types";
 
-export const DeleteSongButton = (p: ICellRendererParams<ISong>, onDelete: SongGridRowClickHandler) => {
+export const DeleteSongButton = (p: ICellRendererParams<ISongRow>, onDelete: SongGridRowClickHandler) => {
     return <>
         <span onClick={() => onDelete(p)} className="clickable"><DeleteIcon fontSize="small" /></span>
     </>;

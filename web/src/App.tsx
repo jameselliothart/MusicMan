@@ -4,13 +4,13 @@ import './App.css';
 import { SongGrid } from './Songs/components/SongGrid';
 import { ISong } from './Songs/models/song.types';
 import { addSong, deleteSong, fetchSongs, updateSong } from './Songs/services/songs.api';
-import { SongGridRowClickHandler } from './Songs/models/song-grid.types';
+import { ISongRow, SongGridRowClickHandler, SongGridRowClickHandlerSync } from './Songs/models/song-grid.types';
 import { toast, ToastContainer } from 'react-toastify';
 import { AddSongForm } from './Songs/components/AddSongForm';
 import { updateSongRow } from './Songs/services/songs.utils';
 
 function App() {
-  const [songs, setSongs] = useState<ISong[]>([]);
+  const [songs, setSongs] = useState<ISongRow[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +20,8 @@ function App() {
         setLoading(true);
         const songsResult = await fetchSongs();
         if (songsResult.ok) {
-          setSongs(songsResult.value);
+          const songRows = songsResult.value.map(s => ISongRow.create(s))
+          setSongs(songRows);
         } else {
           console.error(songsResult.error);
           setError(`Error: ${songsResult.error}`);
@@ -53,7 +54,7 @@ function App() {
   const handleAdd = async (song: ISong) => {
     const addResult = await addSong(song);
     if (addResult.ok) {
-      setSongs((prevSongs) => prevSongs.concat(song));
+      setSongs((prevSongs) => prevSongs.concat(ISongRow.create(song)));
       toast.success(`Added ${song.artist} - ${song.album} - ${song.name}`)
     } else {
       toast.error(`${addResult.error}`);
@@ -73,11 +74,21 @@ function App() {
     }
     const updateResult = await updateSong(updatedSong);
     if (updateResult.ok) {
-      setSongs((prevSongs) => updateSongRow(prevSongs, updatedSong));
+      setSongs((prevSongs) => updateSongRow(prevSongs, ISongRow.create(updatedSong)));
       toast.success(`Updated ${updatedSong.artist} - ${updatedSong.album} - ${updatedSong.name}`)
     } else {
       toast.error(`${updateResult.error}`);
     }
+  }
+
+  const handleEditClick: SongGridRowClickHandlerSync = clickedSongRow => {
+    if (!clickedSongRow.data) {
+      console.error('No song row data received');
+      return;
+    }
+    const editableRow = ISongRow.create(clickedSongRow.data, true);
+    setSongs((prevSongs) => updateSongRow(prevSongs, editableRow));
+
   }
 
   const noRowsMessage = error ?
@@ -99,7 +110,13 @@ function App() {
           </div>
           <div className="grid-container">
             {loading && <p>Loading Songs...</p>}
-            {!loading && <SongGrid songs={songs} noRowsMessage={noRowsMessage} onDelete={handleDelete} onUpdate={handleUpdate} />}
+            {
+              !loading && <SongGrid songs={songs} noRowsMessage={noRowsMessage}
+                onDelete={handleDelete}
+                onUpdate={handleUpdate}
+                onEditClick={handleEditClick}
+              />
+            }
           </div>
         </div>
       </main>

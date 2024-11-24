@@ -6,14 +6,16 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ISong } from '../models/song.types';
 import { DeleteSongButton } from './DeleteSongButton';
-import { SongGridRowClickHandler } from '../models/song-grid.types';
+import { ISongRow, SongGridRowClickHandler, SongGridRowClickHandlerSync } from '../models/song-grid.types';
 import { UpdateSongButton } from './UpdateSongButton';
+import { EditSongButton } from './EditSongButton';
 
 interface SongGridProps {
-  songs: ISong[];
+  songs: ISongRow[];
   noRowsMessage: string;
   onDelete: SongGridRowClickHandler;
   onUpdate: SongGridRowClickHandler;
+  onEditClick: SongGridRowClickHandlerSync;
 }
 
 export const defaultSongs: ISong[] = [
@@ -22,12 +24,18 @@ export const defaultSongs: ISong[] = [
   { id: uuidv4(), artist: 'art2', album: 'first break', name: 'something different' },
 ]
 
-export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate}: SongGridProps) => {
+export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick}: SongGridProps) => {
 
-  const [colDefs] = useState<ColDef<ISong>[]>([
+  const [colDefs] = useState<ColDef<ISongRow>[]>([
+    { field: 'id',
+      headerName: '',
+      filter: false,
+      cellRenderer: (p: ICellRendererParams<ISongRow>) => EditSongButton(p, onEditClick),
+    },
     {
       field: 'artist',
       flex: 2,
+      editable: p => p.data ? p.data.editable : false,
       cellClassRules: {
         'bad-cell-content': p => !p.value || p.value.trim().length === 0
       }
@@ -35,6 +43,7 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate}: SongGridPr
     {
       field: 'album',
       flex: 2,
+      editable: p => p.data ? p.data.editable : false,
       cellClassRules: {
         'bad-cell-content': p => !p.value || p.value.trim().length === 0
       }
@@ -42,6 +51,7 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate}: SongGridPr
     {
       field: 'name',
       flex: 4,
+      editable: p => p.data ? p.data.editable : false,
       cellClassRules: {
         'bad-cell-content': p => !p.value || p.value.trim().length === 0
       }
@@ -49,25 +59,22 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate}: SongGridPr
     {
       field: 'id',
       headerName: '',
-      flex: 1,
       filter: false,
-      editable: false,
-      cellRenderer: (p: ICellRendererParams<ISong>) => UpdateSongButton(p, onUpdate),
+      cellRenderer: (p: ICellRendererParams<ISongRow>) => UpdateSongButton(p, onUpdate),
     },
     {
       field: 'id',
       headerName: '',
-      flex: 1,
       filter: false,
-      editable: false,
-      cellRenderer: (p: ICellRendererParams<ISong>) => DeleteSongButton(p, onDelete),
+      cellRenderer: (p: ICellRendererParams<ISongRow>) => DeleteSongButton(p, onDelete),
     },
   ]);
 
   const defaultColDef: ColDef = {
+    flex: 1,
     filter: true,
     floatingFilter: true,
-    editable: true,
+    editable: false,
   };
 
   return (
