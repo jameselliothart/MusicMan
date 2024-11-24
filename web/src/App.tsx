@@ -72,7 +72,10 @@ function App() {
           Music Library
         </a> icon by <a className="App-link" target="_blank" href="https://icons8.com" rel="noreferrer">Icons8</a>
       </footer>
-      <ToastContainer />
+      <ToastContainer
+        position='bottom-left'
+        theme='dark'
+      />
     </div>
   );
 }
