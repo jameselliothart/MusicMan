@@ -6,10 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
-
-const isValidFieldValue = (value: string, maxFieldLength: number) => {
-  return value.length <= maxFieldLength && value.trim().length > 0
-}
+import { isValidFieldValue } from '../services/songs.utils';
 
 export const AddSongForm = () => {
   const [open, setOpen] = React.useState(false);
