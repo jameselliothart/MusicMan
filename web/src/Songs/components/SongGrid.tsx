@@ -8,8 +8,6 @@ import { ISong } from '../models/song.types';
 import { DeleteSongButton } from './DeleteSongButton';
 import { SongGridRowClickHandler } from '../models/song-grid.types';
 
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
-
 interface SongGridProps {
   songs: ISong[];
   onDelete: SongGridRowClickHandler;
@@ -73,7 +71,7 @@ export const SongGrid = ({ songs, onDelete }: SongGridProps) => {
     <div className={"ag-theme-balham-dark"} style={{ width: '80%', height: '400px' }}>
       <AgGridReact rowData={songs} columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        rowSelection={'multiple'}
+        rowSelection={{mode: 'multiRow'}}
         pagination={true}
         paginationPageSize={20}
 
