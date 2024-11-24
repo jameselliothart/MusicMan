@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  musicdataservice:
+    build:
+      context: ./MusicDataService
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"   # Exposes the backend API
+      - "5001:5001"   # For HTTPS if needed
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+      - DOTNET_ENVIRONMENT=Development
+    networks:
+      - app-network
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"   # Exposes the React app
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Needed for hot reload in Docker
+    depends_on:
+      - musicdataservice
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
