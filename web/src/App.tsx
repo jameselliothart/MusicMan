@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { SongGrid } from './Songs/components/SongGrid';
 import { ISong } from './Songs/models/song.types';
 import { deleteSong, fetchSongs } from './Songs/services/songs.api';
 import { SongGridRowClickHandler } from './Songs/models/song-grid.types';
+import { toast, ToastContainer } from 'react-toastify';
 
 function App() {
   const [songs, setSongs] = useState<ISong[]>([]);
@@ -40,9 +42,9 @@ function App() {
     const deleteResult = await deleteSong(id);
     if (deleteResult.ok) {
       setSongs((prevSongs) => prevSongs.filter(s => s.id !== id));
-      console.log(`Removed ${songRow.data.artist} | ${songRow.data.album} | ${songRow.data.name}`)
+      toast.success(`Removed ${songRow.data.artist} - ${songRow.data.album} - ${songRow.data.name}`);
     } else {
-      console.error(deleteResult.error);
+      toast.error(`${deleteResult.error}`);
     }
   }
 
@@ -70,6 +72,7 @@ function App() {
           Music Library
         </a> icon by <a className="App-link" target="_blank" href="https://icons8.com" rel="noreferrer">Icons8</a>
       </footer>
+      <ToastContainer />
     </div>
   );
 }
