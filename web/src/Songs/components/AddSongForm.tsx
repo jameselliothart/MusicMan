@@ -7,6 +7,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 
+const isValidFieldValue = (value: string, maxFieldLength: number) => {
+  return value.length <= maxFieldLength && value.trim().length > 0
+}
+
 export const AddSongForm = () => {
   const [open, setOpen] = React.useState(false);
   const [artist, setArtist] = React.useState('');
@@ -24,22 +28,28 @@ export const AddSongForm = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const resetState = () => {
     setOpen(false);
+    setArtist('');
+    setAlbum('');
+    setName('');
   };
+
+  React.useEffect(() => {
+    const errors = {
+      artist: !isValidFieldValue(artist, maxFieldLength),
+      album: !isValidFieldValue(album, maxFieldLength),
+      name: !isValidFieldValue(name, maxFieldLength),
+    }
+    setHasErrors(errors)
+  }, [open, artist, album, name]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    getter: string,
     setter: React.Dispatch<React.SetStateAction<string>>
   ) => {
     const newValue = e.target.value;
     setter(newValue);
-    if (newValue.length <= maxFieldLength && newValue.trim().length > 0) {
-      setHasErrors((prev) => {return {...prev, [getter]:false}});
-    } else {
-      setHasErrors((prev) => {return {...prev, [getter]:true}});
-    }
   };
 
   return (
@@ -48,7 +58,7 @@ export const AddSongForm = () => {
       <span onClick={handleClickOpen} className="clickable"><AddIcon /></span>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={resetState}
         PaperProps={{
           component: 'form',
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,7 +69,7 @@ export const AddSongForm = () => {
             const album = formJson.album;
             const name = formJson.name;
             console.log(name);
-            handleClose();
+            resetState();
           },
         }}
       >
@@ -73,7 +83,7 @@ export const AddSongForm = () => {
             name="artist"
             label="Artist"
             value={artist}
-            onChange={e => handleChange(e, 'artist', setArtist)}
+            onChange={e => handleChange(e, setArtist)}
             fullWidth
             variant="standard"
             error={artist.length > maxFieldLength}
@@ -90,14 +100,14 @@ export const AddSongForm = () => {
             name="album"
             label="Album"
             value={album}
-            onChange={e => handleChange(e, 'album', setAlbum)}
+            onChange={e => handleChange(e, setAlbum)}
             fullWidth
             variant="standard"
             error={album.length > maxFieldLength}
             helperText={
               album.length > maxFieldLength
-              ? `Exceeds maximum of ${maxFieldLength} characters by ${(album.length - maxFieldLength)}`
-              : ''
+                ? `Exceeds maximum of ${maxFieldLength} characters by ${(album.length - maxFieldLength)}`
+                : ''
             }
           />
           <TextField
@@ -107,20 +117,20 @@ export const AddSongForm = () => {
             name="name"
             label="Name"
             value={name}
-            onChange={e => handleChange(e, 'name', setName)}
+            onChange={e => handleChange(e, setName)}
             fullWidth
             variant="standard"
             error={name.length > maxFieldLength}
             helperText={
               name.length > maxFieldLength
-              ? `Exceeds maximum of ${maxFieldLength} characters by ${(name.length - maxFieldLength)}`
-              : ''
+                ? `Exceeds maximum of ${maxFieldLength} characters by ${(name.length - maxFieldLength)}`
+                : ''
             }
           />
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={Object.values(hasErrors).some(e => e)}>Save</Button>
-          <Button onClick={handleClose}>Never Mind</Button>
+          <Button onClick={resetState}>Never Mind</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
