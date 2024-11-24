@@ -23,24 +23,61 @@ export const defaultSongs: ISong[] = [
 
 export const SongGrid = ({ songs, onDelete }: SongGridProps) => {
 
-  const [colDefs, setColDefs] = useState<ColDef<ISong>[]>([
-    { field: 'artist' },
-    { field: 'album' },
-    { field: 'name' },
+  const [colDefs] = useState<ColDef<ISong>[]>([
+    {
+      field: 'artist',
+      flex: 2,
+      cellClassRules: {
+        'bad-cell-content': p => !p.value || p.value.trim().length === 0
+      }
+    },
+    {
+      field: 'album',
+      flex: 2,
+      cellClassRules: {
+        'bad-cell-content': p => !p.value || p.value.trim().length === 0
+      }
+    },
+    {
+      field: 'name',
+      flex: 4,
+      cellClassRules: {
+        'bad-cell-content': p => !p.value || p.value.trim().length === 0
+      }
+    },
     {
       field: 'id',
       headerName: '',
+      flex: 1,
+      filter: false,
+      editable: false,
+      cellRenderer: (p: ICellRendererParams<ISong>) => SongDeleteButton(p, onDelete),
+    },
+    {
+      field: 'id',
+      headerName: '',
+      flex: 1,
+      filter: false,
+      editable: false,
       cellRenderer: (p: ICellRendererParams<ISong>) => SongDeleteButton(p, onDelete),
     },
   ]);
 
   const defaultColDef: ColDef = {
-    flex: 1,
+    filter: true,
+    floatingFilter: true,
+    editable: true,
   };
 
   return (
-    <div className={"ag-theme-balham-dark"} style={{ width: '100%', height: '400px' }}>
-      <AgGridReact rowData={songs} columnDefs={colDefs} defaultColDef={defaultColDef} />
+    <div className={"ag-theme-balham-dark"} style={{ width: '80%', height: '400px' }}>
+      <AgGridReact rowData={songs} columnDefs={colDefs}
+        defaultColDef={defaultColDef}
+        rowSelection={'multiple'}
+        pagination={true}
+        paginationPageSize={20}
+
+      />
     </div>
   );
 }

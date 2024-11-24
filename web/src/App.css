@@ -48,6 +48,10 @@
   flex: 1; /* Let the grid take the remaining space */
 }
 
+.bad-cell-content {
+  background-color: coral;
+}
+
 .App-footer {
   background-color: #282c34;
   align-items: center;
