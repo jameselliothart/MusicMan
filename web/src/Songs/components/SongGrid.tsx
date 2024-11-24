@@ -18,12 +18,6 @@ interface SongGridProps {
   onEditClick: SongGridRowClickHandlerSync;
 }
 
-export const defaultSongs: ISong[] = [
-  { id: uuidv4(), artist: 'art1', album: 'debut', name: 'an ode' },
-  { id: uuidv4(), artist: 'art1', album: 'debut', name: 'second ode' },
-  { id: uuidv4(), artist: 'art2', album: 'first break', name: 'something different' },
-]
-
 export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick}: SongGridProps) => {
 
   const [colDefs] = useState<ColDef<ISongRow>[]>([
