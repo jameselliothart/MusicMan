@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { SongGrid } from './Songs/components/SongGrid';
 import { ISong } from './Songs/models/song.types';
-import { addSong, deleteSong, fetchSongs } from './Songs/services/songs.api';
+import { addSong, deleteSong, fetchSongs, updateSong } from './Songs/services/songs.api';
 import { SongGridRowClickHandler } from './Songs/models/song-grid.types';
 import { toast, ToastContainer } from 'react-toastify';
 import { AddSongForm } from './Songs/components/AddSongForm';
@@ -59,6 +59,30 @@ function App() {
     }
   }
 
+  const handleUpdate: SongGridRowClickHandler = async (songRow) => {
+    if (!songRow.data) {
+      console.error('No song row data received');
+      return;
+    }
+    const song: ISong = {
+      id: songRow.data.id,
+      artist: songRow.data.artist,
+      album: songRow.data.album,
+      name: songRow.data.name,
+    }
+    const updateResult = await updateSong(song);
+    if (updateResult.ok) {
+      setSongs((prevSongs) => prevSongs.concat(song));
+      toast.success(`Updated ${song.artist} - ${song.album} - ${song.name}`)
+    } else {
+      toast.error(`${updateResult.error}`);
+    }
+  }
+
+  const noRowsMessage = error ?
+    'Sorry! Your songs are unavailable right now. Please try again later.' :
+    'You have no songs. Try adding some!'
+
   return (
     <div className="App">
       <header className="App-header">
@@ -70,13 +94,11 @@ function App() {
       <main className='App-main'>
         <div className='content-container'>
           <div className='add-song'>
-            <AddSongForm onSave={handleAdd}/>
+            <AddSongForm onSave={handleAdd} />
           </div>
           <div className="grid-container">
             {loading && <p>Loading Songs...</p>}
-            {error && <p>Sorry! Your songs are unavailable right now. Please try again later.</p>}
-            {!loading && !error && songs.length === 0 && <p>You have no songs. Try adding some!</p>}
-            {!loading && !error && <SongGrid songs={songs} onDelete={handleDelete} />}
+            {!loading && !error && <SongGrid songs={songs} noRowsMessage={noRowsMessage} onDelete={handleDelete} onUpdate={handleUpdate} />}
           </div>
         </div>
       </main>

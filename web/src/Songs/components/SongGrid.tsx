@@ -1,16 +1,19 @@
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-balham.css";
-import { ClientSideRowModelModule, ColDef, ICellRendererParams, ModuleRegistry } from 'ag-grid-community';
+import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ISong } from '../models/song.types';
 import { DeleteSongButton } from './DeleteSongButton';
 import { SongGridRowClickHandler } from '../models/song-grid.types';
+import { UpdateSongButton } from './UpdateSongButton';
 
 interface SongGridProps {
   songs: ISong[];
+  noRowsMessage: string;
   onDelete: SongGridRowClickHandler;
+  onUpdate: SongGridRowClickHandler;
 }
 
 export const defaultSongs: ISong[] = [
@@ -19,7 +22,7 @@ export const defaultSongs: ISong[] = [
   { id: uuidv4(), artist: 'art2', album: 'first break', name: 'something different' },
 ]
 
-export const SongGrid = ({ songs, onDelete }: SongGridProps) => {
+export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate}: SongGridProps) => {
 
   const [colDefs] = useState<ColDef<ISong>[]>([
     {
@@ -49,7 +52,7 @@ export const SongGrid = ({ songs, onDelete }: SongGridProps) => {
       flex: 1,
       filter: false,
       editable: false,
-      cellRenderer: (p: ICellRendererParams<ISong>) => DeleteSongButton(p, onDelete),
+      cellRenderer: (p: ICellRendererParams<ISong>) => UpdateSongButton(p, onUpdate),
     },
     {
       field: 'id',
@@ -79,7 +82,7 @@ export const SongGrid = ({ songs, onDelete }: SongGridProps) => {
         }}
         pagination={true}
         paginationPageSize={20}
-
+        localeText={{ noRowsToShow: noRowsMessage }}
       />
     </div>
   );
