@@ -40,3 +40,10 @@ export const addSong = async (song: ISong) => {
   const result = Promise.resolve(Result.Ok(1));
   return result;
 }
+
+export const updateSong = async (song: ISong) => {
+  console.log('Updating song', song);
+  // const response = await api.put('', song);
+  const result = Promise.resolve(Result.Ok(1));
+  return result;
+}
