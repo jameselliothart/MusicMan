@@ -71,7 +71,12 @@ export const SongGrid = ({ songs, onDelete }: SongGridProps) => {
     <div className={"ag-theme-balham-dark"} style={{ width: '80%', height: '400px' }}>
       <AgGridReact rowData={songs} columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        rowSelection={{mode: 'multiRow'}}
+        rowSelection={{
+          mode: 'multiRow',
+          checkboxes: false,
+          headerCheckbox: false,
+          enableClickSelection: true,
+        }}
         pagination={true}
         paginationPageSize={20}
 
