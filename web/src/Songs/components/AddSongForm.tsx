@@ -9,6 +9,16 @@ import AddIcon from '@mui/icons-material/Add';
 
 export const AddSongForm = () => {
   const [open, setOpen] = React.useState(false);
+  const [artist, setArtist] = React.useState('');
+  const [album, setAlbum] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [hasErrors, setHasErrors] = React.useState({
+    artist: true,
+    album: true,
+    name: true,
+  });
+
+  const maxFieldLength = 10;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -16,6 +26,20 @@ export const AddSongForm = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    getter: string,
+    setter: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    const newValue = e.target.value;
+    setter(newValue);
+    if (newValue.length <= maxFieldLength && newValue.trim().length > 0) {
+      setHasErrors((prev) => {return {...prev, [getter]:false}});
+    } else {
+      setHasErrors((prev) => {return {...prev, [getter]:true}});
+    }
   };
 
   return (
@@ -31,8 +55,10 @@ export const AddSongForm = () => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
-            console.log(email);
+            const artist = formJson.artist;
+            const album = formJson.album;
+            const name = formJson.name;
+            console.log(name);
             handleClose();
           },
         }}
@@ -46,9 +72,16 @@ export const AddSongForm = () => {
             id="artist"
             name="artist"
             label="Artist"
+            value={artist}
+            onChange={e => handleChange(e, 'artist', setArtist)}
             fullWidth
             variant="standard"
-            slotProps={{htmlInput: { maxLength: 100 }}}
+            error={artist.length > maxFieldLength}
+            helperText={
+              artist.length > maxFieldLength
+                ? `Exceeds maximum of ${maxFieldLength} characters by ${(artist.length - maxFieldLength)}`
+                : ''
+            }
           />
           <TextField
             required
@@ -56,9 +89,16 @@ export const AddSongForm = () => {
             id="album"
             name="album"
             label="Album"
+            value={album}
+            onChange={e => handleChange(e, 'album', setAlbum)}
             fullWidth
             variant="standard"
-            slotProps={{htmlInput: { maxLength: 100 }}}
+            error={album.length > maxFieldLength}
+            helperText={
+              album.length > maxFieldLength
+              ? `Exceeds maximum of ${maxFieldLength} characters by ${(album.length - maxFieldLength)}`
+              : ''
+            }
           />
           <TextField
             required
@@ -66,13 +106,20 @@ export const AddSongForm = () => {
             id="name"
             name="name"
             label="Name"
+            value={name}
+            onChange={e => handleChange(e, 'name', setName)}
             fullWidth
             variant="standard"
-            slotProps={{htmlInput: { maxLength: 100 }}}
+            error={name.length > maxFieldLength}
+            helperText={
+              name.length > maxFieldLength
+              ? `Exceeds maximum of ${maxFieldLength} characters by ${(name.length - maxFieldLength)}`
+              : ''
+            }
           />
         </DialogContent>
         <DialogActions>
-          <Button type="submit">Save</Button>
+          <Button type="submit" disabled={Object.values(hasErrors).some(e => e)}>Save</Button>
           <Button onClick={handleClose}>Never Mind</Button>
         </DialogActions>
       </Dialog>
