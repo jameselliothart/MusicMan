@@ -99,7 +99,7 @@ function App() {
           </div>
           <div className="grid-container">
             {loading && <p>Loading Songs...</p>}
-            {!loading && !error && <SongGrid songs={songs} noRowsMessage={noRowsMessage} onDelete={handleDelete} onUpdate={handleUpdate} />}
+            {!loading && <SongGrid songs={songs} noRowsMessage={noRowsMessage} onDelete={handleDelete} onUpdate={handleUpdate} />}
           </div>
         </div>
       </main>
