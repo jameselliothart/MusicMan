@@ -56,11 +56,11 @@ function App() {
         </p>
       </header>
 
-      <body>
+      <main>
         {loading && <p>Loading Songs...</p>}
         {error && <p>Sorry! Your songs are unavailable right now. Please try again later.</p>}
         {!loading && !error && <SongGrid songs={songs} onDelete={handleDelete} />}
-      </body>
+      </main>
 
       <footer className="App-footer">
         <a
@@ -70,12 +70,16 @@ function App() {
           rel="noreferrer"
         >
           Music Library
-        </a> icon by <a className="App-link" target="_blank" href="https://icons8.com" rel="noreferrer">Icons8</a>
+        </a>{' '}
+        icon by{' '}
+        <a className="App-link" target="_blank" href="https://icons8.com" rel="noreferrer">Icons8</a>
       </footer>
+
       <ToastContainer
         position='bottom-left'
         theme='dark'
       />
+
     </div>
   );
 }
