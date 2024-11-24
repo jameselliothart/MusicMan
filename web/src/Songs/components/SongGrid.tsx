@@ -5,7 +5,7 @@ import { ClientSideRowModelModule, ColDef, ICellRendererParams, ModuleRegistry }
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ISong } from '../models/song.types';
-import { SongDeleteButton } from './SongDeleteButton';
+import { DeleteSongButton } from './DeleteSongButton';
 import { SongGridRowClickHandler } from '../models/song-grid.types';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
@@ -51,7 +51,7 @@ export const SongGrid = ({ songs, onDelete }: SongGridProps) => {
       flex: 1,
       filter: false,
       editable: false,
-      cellRenderer: (p: ICellRendererParams<ISong>) => SongDeleteButton(p, onDelete),
+      cellRenderer: (p: ICellRendererParams<ISong>) => DeleteSongButton(p, onDelete),
     },
     {
       field: 'id',
@@ -59,7 +59,7 @@ export const SongGrid = ({ songs, onDelete }: SongGridProps) => {
       flex: 1,
       filter: false,
       editable: false,
-      cellRenderer: (p: ICellRendererParams<ISong>) => SongDeleteButton(p, onDelete),
+      cellRenderer: (p: ICellRendererParams<ISong>) => DeleteSongButton(p, onDelete),
     },
   ]);
 
