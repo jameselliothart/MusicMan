@@ -1,49 +1,74 @@
-import axios from "axios";
 import { ISong, UUIDv4 } from "../models/song.types";
-import { defaultSongs } from "../components/SongGrid";
 import { Result } from "../../shared/result";
 
-const api = axios.create({
-  baseURL: '',
-});
+const BASE_URI = 'http://localhost:5298/api/songs';
+
+const HEADERS = new Headers();
+HEADERS.append("Content-Type", "application/json");
 
 export const fetchSongs = async () => {
+  console.log('Fetching all songs')
   try {
-    console.log('Fetching all songs')
-    // const response = await api.get<ISong[]>('/songs');
-    // console.log(response.data);
-
-    const data = Promise.resolve(defaultSongs);
-    const songData = await data;
-    return Result.Ok(songData);
+    const response = await fetch(BASE_URI,
+      {
+        method: 'GET',
+        headers: HEADERS,
+      }
+    );
+    const songs: ISong[] = await response.json();
+    const result = response.ok ? Result.Ok(songs) : Result.Error(response.status);
+    return result;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return Result.Error(error.message);
-      // console.error('Axios error:', error.response?.status); // HTTP status code
-      // console.error('Error message:', error.message); // Error message
-    } else {
-      return Result.Error(error);
-    }
+    return Result.Error(error)
   }
 };
 
 export const deleteSong = async (id: UUIDv4) => {
   console.log(`Deleting song id '${id}'`);
-  // const response = await axios.delete(`/songs/${id}`);
-  const result = Promise.resolve(Result.Ok(1));
-  return result;
+  try {
+    const response = await fetch(`${BASE_URI}/${id}`,
+      {
+        method: 'DELETE',
+        headers: HEADERS,
+      }
+    );
+    const result = response.ok ? Result.Ok('') : Result.Error(response.status);
+    return result;
+  } catch (error) {
+    return Result.Error(error)
+  }
 };
 
 export const addSong = async (song: ISong) => {
   console.log('Adding song', song);
-  // const response = await api.post('', song);
-  const result = Promise.resolve(Result.Ok(1));
-  return result;
+  try {
+    const response = await fetch(BASE_URI,
+      {
+        method: 'POST',
+        body: JSON.stringify(song),
+        headers: HEADERS,
+      }
+    );
+    const result = response.ok ? Result.Ok('') : Result.Error(response.status);
+    return result;
+  } catch (error) {
+    return Result.Error(error)
+  }
 }
 
 export const updateSong = async (song: ISong) => {
   console.log('Updating song', song);
-  // const response = await api.put('', song);
-  const result = Promise.resolve(Result.Ok(1));
-  return result;
+  try {
+    const response = await fetch(BASE_URI,
+      {
+        method: 'PUT',
+        body: JSON.stringify(song),
+        headers: HEADERS,
+      }
+    );
+    const result = response.ok ? Result.Ok('') : Result.Error(response.status);
+    return result;
+  } catch (error) {
+    return Result.Error(error)
+  }
 }
