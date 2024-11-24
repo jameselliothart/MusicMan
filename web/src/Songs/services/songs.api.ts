@@ -1,15 +1,16 @@
 import { ISong, UUIDv4 } from "../models/song.types";
 import { Result } from "../../shared/result";
 
-const BASE_URI = 'http://localhost:5298/api/songs';
+const BASE_URI = `${process.env.REACT_APP_API_URL}/api/songs`;
 
 const HEADERS = new Headers();
 HEADERS.append("Content-Type", "application/json");
 
 export const fetchSongs = async () => {
-  console.log('Fetching all songs')
+  const uri = BASE_URI;
+  console.log(uri, 'Fetching all songs')
   try {
-    const response = await fetch(BASE_URI,
+    const response = await fetch(uri,
       {
         method: 'GET',
         headers: HEADERS,
@@ -24,9 +25,10 @@ export const fetchSongs = async () => {
 };
 
 export const deleteSong = async (id: UUIDv4) => {
-  console.log(`Deleting song id '${id}'`);
+  const uri = `${BASE_URI}/${id}`;
+  console.log(uri, `Deleting song`);
   try {
-    const response = await fetch(`${BASE_URI}/${id}`,
+    const response = await fetch(uri,
       {
         method: 'DELETE',
         headers: HEADERS,
@@ -40,9 +42,10 @@ export const deleteSong = async (id: UUIDv4) => {
 };
 
 export const addSong = async (song: ISong) => {
-  console.log('Adding song', song);
+  const uri = BASE_URI;
+  console.log(uri, 'Adding song', song);
   try {
-    const response = await fetch(BASE_URI,
+    const response = await fetch(uri,
       {
         method: 'POST',
         body: JSON.stringify(song),
@@ -57,9 +60,10 @@ export const addSong = async (song: ISong) => {
 }
 
 export const updateSong = async (song: ISong) => {
-  console.log('Updating song', song);
+  const uri = BASE_URI;
+  console.log(uri, 'Updating song', song);
   try {
-    const response = await fetch(BASE_URI,
+    const response = await fetch(uri,
       {
         method: 'PUT',
         body: JSON.stringify(song),
