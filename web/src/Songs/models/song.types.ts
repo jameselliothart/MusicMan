@@ -1,4 +1,4 @@
-type UUIDv4 = string;
+export type UUIDv4 = string;
 type Artist = string;
 type Album = string;
 type Name = string;
