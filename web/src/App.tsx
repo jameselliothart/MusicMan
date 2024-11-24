@@ -7,6 +7,7 @@ import { addSong, deleteSong, fetchSongs, updateSong } from './Songs/services/so
 import { SongGridRowClickHandler } from './Songs/models/song-grid.types';
 import { toast, ToastContainer } from 'react-toastify';
 import { AddSongForm } from './Songs/components/AddSongForm';
+import { updateSongRow } from './Songs/services/songs.utils';
 
 function App() {
   const [songs, setSongs] = useState<ISong[]>([]);
@@ -59,21 +60,21 @@ function App() {
     }
   }
 
-  const handleUpdate: SongGridRowClickHandler = async (songRow) => {
-    if (!songRow.data) {
+  const handleUpdate: SongGridRowClickHandler = async (updatedSongRow) => {
+    if (!updatedSongRow.data) {
       console.error('No song row data received');
       return;
     }
-    const song: ISong = {
-      id: songRow.data.id,
-      artist: songRow.data.artist,
-      album: songRow.data.album,
-      name: songRow.data.name,
+    const updatedSong: ISong = {
+      id: updatedSongRow.data.id,
+      artist: updatedSongRow.data.artist,
+      album: updatedSongRow.data.album,
+      name: updatedSongRow.data.name,
     }
-    const updateResult = await updateSong(song);
+    const updateResult = await updateSong(updatedSong);
     if (updateResult.ok) {
-      setSongs((prevSongs) => prevSongs.concat(song));
-      toast.success(`Updated ${song.artist} - ${song.album} - ${song.name}`)
+      setSongs((prevSongs) => updateSongRow(prevSongs, updatedSong));
+      toast.success(`Updated ${updatedSong.artist} - ${updatedSong.album} - ${updatedSong.name}`)
     } else {
       toast.error(`${updateResult.error}`);
     }
