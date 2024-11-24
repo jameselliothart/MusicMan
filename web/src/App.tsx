@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { SongGrid } from './Songs/components/SongGrid';
 import { ISong } from './Songs/models/song.types';
-import { deleteSong, fetchSongs } from './Songs/services/songs.api';
+import { addSong, deleteSong, fetchSongs } from './Songs/services/songs.api';
 import { SongGridRowClickHandler } from './Songs/models/song-grid.types';
 import { toast, ToastContainer } from 'react-toastify';
 import { AddSongForm } from './Songs/components/AddSongForm';
@@ -49,6 +49,16 @@ function App() {
     }
   }
 
+  const handleAdd = async (song: ISong) => {
+    const addResult = await addSong(song);
+    if (addResult.ok) {
+      setSongs((prevSongs) => prevSongs.concat(song));
+      toast.success(`Added ${song.artist} - ${song.album} - ${song.name}`)
+    } else {
+      toast.error(`${addResult.error}`);
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -60,7 +70,7 @@ function App() {
       <main className='App-main'>
         <div className='content-container'>
           <div className='add-song'>
-            <AddSongForm />
+            <AddSongForm onSave={handleAdd}/>
           </div>
           <div className="grid-container">
             {loading && <p>Loading Songs...</p>}

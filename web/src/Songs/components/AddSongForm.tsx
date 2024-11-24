@@ -7,8 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import { isValidFieldValue } from '../services/songs.utils';
+import { ISong, newSongId } from '../models/song.types';
 
-export const AddSongForm = () => {
+interface AddSongFormProps {
+  onSave: (song: ISong) => Promise<void>;
+}
+
+export const AddSongForm = ({ onSave }: AddSongFormProps) => {
   const [open, setOpen] = React.useState(false);
   const [artist, setArtist] = React.useState('');
   const [album, setAlbum] = React.useState('');
@@ -58,14 +63,17 @@ export const AddSongForm = () => {
         onClose={resetState}
         PaperProps={{
           component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+          onSubmit: async (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
-            const artist = formJson.artist;
-            const album = formJson.album;
-            const name = formJson.name;
-            console.log(name);
+            const song: ISong = {
+              id: newSongId(),
+              artist: formJson.artist,
+              album: formJson.album,
+              name: formJson.name,
+            }
+            await onSave(song);
             resetState();
           },
         }}
