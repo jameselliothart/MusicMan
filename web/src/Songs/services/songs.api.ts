@@ -32,4 +32,11 @@ export const deleteSong = async (id: UUIDv4) => {
   // const response = await axios.delete(`/songs/${id}`);
   const result = Promise.resolve(Result.Ok(1));
   return result;
+};
+
+export const addSong = async (song: ISong) => {
+  console.log('Adding song', song);
+  // const response = await api.post('', song);
+  const result = Promise.resolve(Result.Ok(1));
+  return result;
 }
