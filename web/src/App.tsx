@@ -1,8 +1,51 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import { defaultSongs, SongGrid } from './Songs/components/SongGrid';
+import { SongGrid } from './Songs/components/SongGrid';
+import { ISong } from './Songs/models/song.types';
+import { deleteSong, fetchSongs } from './Songs/services/songs.api';
+import { SongGridRowClickHandler } from './Songs/models/song-grid.types';
 
 function App() {
+  const [songs, setSongs] = useState<ISong[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadSongs = async () => {
+      try {
+        setLoading(true);
+        const songsResult = await fetchSongs();
+        if (songsResult.ok) {
+          setSongs(songsResult.value);
+        } else {
+          console.error(songsResult.error);
+          setError(`Error: ${songsResult.error}`);
+        }
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadSongs();
+  }, []);
+
+  const handleDelete: SongGridRowClickHandler = async (songRow) => {
+    if (!songRow.data) {
+      console.error('No song row data received');
+      return;
+    }
+    const id = songRow.data.id;
+    const deleteResult = await deleteSong(id);
+    if (deleteResult.ok) {
+      setSongs((prevSongs) => prevSongs.filter(s => s.id !== id));
+      console.log(`Removed ${songRow.data.artist} | ${songRow.data.album} | ${songRow.data.name}`)
+    } else {
+      console.error(deleteResult.error);
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -10,9 +53,13 @@ function App() {
           Your songs
         </p>
       </header>
+
       <body>
-        <SongGrid songs={defaultSongs} />
+        {loading && <p>Loading Songs...</p>}
+        {error && <p>Sorry! Your songs are unavailable right now. Please try again later.</p>}
+        {!loading && !error && <SongGrid songs={songs} onDelete={handleDelete} />}
       </body>
+
       <footer className="App-footer">
         <a
           className="App-link"
