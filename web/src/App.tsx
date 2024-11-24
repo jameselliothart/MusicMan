@@ -56,9 +56,10 @@ function App() {
         </p>
       </header>
 
-      <main>
+      <main className='App-main'>
         {loading && <p>Loading Songs...</p>}
         {error && <p>Sorry! Your songs are unavailable right now. Please try again later.</p>}
+        {!loading && !error && songs.length === 0 && <p>You have no songs. Try adding some!</p>}
         {!loading && !error && <SongGrid songs={songs} onDelete={handleDelete} />}
       </main>
 
