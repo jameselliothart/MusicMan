@@ -3,6 +3,7 @@ using MusicDataService.Domain;
 using MusicDataService.Queries;
 
 var SONGS = new List<Song>();
+var AllowDevAccessPolicy = "allowDevAccessPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ICommandHandler, InMemoryCommandHandler>(_ => new InMemoryCommandHandler(SONGS));
 builder.Services.AddSingleton<IQueryHandler, InMemoryQueryHandler>(_ => new InMemoryQueryHandler(SONGS));
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: AllowDevAccessPolicy,
+        policy =>
+        {
+            policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+            policy.WithHeaders("*");
+            policy.WithMethods("*");
+        }
+    );
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,6 +39,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseCors(AllowDevAccessPolicy);
 app.MapControllers();
 
 app.Run();
