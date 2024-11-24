@@ -5,6 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import AddIcon from '@mui/icons-material/Add';
 
 export const AddSongForm = () => {
   const [open, setOpen] = React.useState(false);
@@ -20,9 +21,7 @@ export const AddSongForm = () => {
   return (
     <React.Fragment>
       <p>Add a song</p>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        +
-      </Button>
+      <span onClick={handleClickOpen} className="clickable"><AddIcon /></span>
       <Dialog
         open={open}
         onClose={handleClose}

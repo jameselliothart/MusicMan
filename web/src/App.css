@@ -52,6 +52,10 @@
   background-color: coral;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .App-footer {
   background-color: #282c34;
   align-items: center;

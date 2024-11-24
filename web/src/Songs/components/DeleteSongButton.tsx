@@ -5,6 +5,6 @@ import { SongGridRowClickHandler } from "../models/song-grid.types";
 
 export const DeleteSongButton = (p: ICellRendererParams<ISong>, onDelete: SongGridRowClickHandler) => {
     return <>
-        <span onClick={() => onDelete(p)}><DeleteIcon fontSize="small"/></span>
+        <span onClick={() => onDelete(p)} className="clickable"><DeleteIcon fontSize="small" /></span>
     </>;
 };
