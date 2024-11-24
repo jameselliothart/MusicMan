@@ -30,6 +30,24 @@
   color: white;
 }
 
+.content-container {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  gap: 10px; /* Add space between the left and right sections */
+}
+
+.add-song {
+  flex: 0 0 200px; /* Fixed width for the "Add a song" section */
+  padding: 10px; /* Optional: Add padding */
+  border: 1px solid #ccc; /* Optional: Border for styling */
+  border-radius: 5px; /* Optional: Rounded corners */
+  text-align: center; /* Center-align text */
+}
+
+.grid-container {
+  flex: 1; /* Let the grid take the remaining space */
+}
+
 .App-footer {
   background-color: #282c34;
   align-items: center;

@@ -57,10 +57,18 @@ function App() {
       </header>
 
       <main className='App-main'>
-        {loading && <p>Loading Songs...</p>}
-        {error && <p>Sorry! Your songs are unavailable right now. Please try again later.</p>}
-        {!loading && !error && songs.length === 0 && <p>You have no songs. Try adding some!</p>}
-        {!loading && !error && <SongGrid songs={songs} onDelete={handleDelete} />}
+        <div className='content-container'>
+          <div className='add-song'>
+            <p>Add a song</p>
+            <button>+</button>
+          </div>
+          <div className="grid-container">
+            {loading && <p>Loading Songs...</p>}
+            {error && <p>Sorry! Your songs are unavailable right now. Please try again later.</p>}
+            {!loading && !error && songs.length === 0 && <p>You have no songs. Try adding some!</p>}
+            {!loading && !error && <SongGrid songs={songs} onDelete={handleDelete} />}
+          </div>
+        </div>
       </main>
 
       <footer className="App-footer">
