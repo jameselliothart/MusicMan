@@ -6,6 +6,7 @@ import { ISong } from './Songs/models/song.types';
 import { deleteSong, fetchSongs } from './Songs/services/songs.api';
 import { SongGridRowClickHandler } from './Songs/models/song-grid.types';
 import { toast, ToastContainer } from 'react-toastify';
+import { AddSongForm } from './Songs/components/AddSongForm';
 
 function App() {
   const [songs, setSongs] = useState<ISong[]>([]);
@@ -59,8 +60,7 @@ function App() {
       <main className='App-main'>
         <div className='content-container'>
           <div className='add-song'>
-            <p>Add a song</p>
-            <button>+</button>
+            <AddSongForm />
           </div>
           <div className="grid-container">
             {loading && <p>Loading Songs...</p>}
