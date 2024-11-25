@@ -9,7 +9,11 @@ namespace MusicDataService.Controllers;
 
 [ApiController]
 [Route("api/songs")]
-public class SongsController(ICommandHandler commandHandler, IQueryHandler queryHandler) : ControllerBase
+public class SongsController(
+    ICommandHandler commandHandler,
+    IQueryHandler queryHandler,
+    ILogger<SongsController> logger
+    ) : ControllerBase
 {
     public static SongDto ToDto(Song song) => new(song.Id, song.Name, song.Artist, song.Album);
 
@@ -17,13 +21,16 @@ public class SongsController(ICommandHandler commandHandler, IQueryHandler query
     [HttpGet("/api/guid")]
     public IActionResult NewGuid()
     {
-        return Ok(Guid.NewGuid());
+        var guid = Guid.NewGuid();
+        logger.LogInformation("Returning new guid {guid}", guid);
+        return Ok(guid);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync()
     {
         var query = new QueryAll();
+        logger.LogInformation("Received query {query}", query);
         var result = await queryHandler.Handle(query);
         return Ok(result.Select(ToDto).ToList());
     }
@@ -32,10 +39,12 @@ public class SongsController(ICommandHandler commandHandler, IQueryHandler query
     public async Task<ActionResult<SongDto>> GetSongAsync(Guid id)
     {
         var query = new QuerySpecific(id);
+        logger.LogInformation("Received query {query}", query);
         var result = await queryHandler.Handle(query);
         if (!result.Any())
         {
-            return NotFound($"Unable to find song id '{id}'");
+            logger.LogWarning("Unable to find song id '{id}'", id);
+            return NotFound();
         }
         return Ok(result.Select(ToDto).First());
     }
@@ -44,7 +53,14 @@ public class SongsController(ICommandHandler commandHandler, IQueryHandler query
     public async Task<IActionResult> AddSongAsync([FromBody] AddSongDto song)
     {
         var command = new AddSongCommand(song.Id, song.Name, song.Artist, song.Album);
-        await commandHandler.Handle(command);
+        logger.LogInformation("Received command {command}", command);
+        var addedCount = await commandHandler.Handle(command);
+        // TODO use Result
+        if (addedCount == 0)
+        {
+            logger.LogError("Song with id {id} already exists", command.Id);
+            return BadRequest($"Song with id {command.Id} already exists");
+        }
         var location = Url.Action(nameof(GetSongAsync), "Songs", new { id = command.Id }, Request.Scheme);
         return Created(location, null);
     }
@@ -53,6 +69,7 @@ public class SongsController(ICommandHandler commandHandler, IQueryHandler query
     public async Task<IActionResult> UpdateSongAsync([FromBody] UpdateSongDto song)
     {
         var command = new UpdateSongCommand(song.Id, song.Name, song.Artist, song.Album);
+        logger.LogInformation("Received command {command}", command);
         var numAffected = await commandHandler.Handle(command);
         if (numAffected == 0)
             return NotFound();
@@ -63,6 +80,7 @@ public class SongsController(ICommandHandler commandHandler, IQueryHandler query
     public async Task<IActionResult> DeleteSongAsync(Guid id)
     {
         var command = new DeleteSongCommand(id);
+        logger.LogInformation("Received command {command}", command);
         var numAffected = await commandHandler.Handle(command);
         if (numAffected == 0)
             return NotFound();

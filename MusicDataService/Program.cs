@@ -1,16 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using MusicDataService.Commands;
-using MusicDataService.Domain;
+using MusicDataService.Persistence;
 using MusicDataService.Queries;
 
-var SONGS = new List<Song>();
 var AllowDevAccessPolicy = "allowDevAccessPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<ICommandHandler, InMemoryCommandHandler>(_ => new InMemoryCommandHandler(SONGS));
-builder.Services.AddSingleton<IQueryHandler, InMemoryQueryHandler>(_ => new InMemoryQueryHandler(SONGS));
+builder.Services.AddScoped<ICommandHandler, SqlCommandHandler>();
+builder.Services.AddScoped<IQueryHandler, SqlQueryHandler>();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
