@@ -10,6 +10,7 @@ namespace MusicDataService.Songs.Controllers;
 
 [ApiController]
 [Route("api/songs")]
+[Produces("application/json")]
 public class SongsController(
     ICommandHandler commandHandler,
     IQueryHandler queryHandler,
@@ -24,7 +25,7 @@ public class SongsController(
     {
         var guid = Guid.NewGuid();
         logger.LogInformation("Returning new guid {guid}", guid);
-        return Ok(guid);
+        return Ok(new { guid });
     }
 
     [HttpGet]
