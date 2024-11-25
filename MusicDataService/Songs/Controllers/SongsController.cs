@@ -19,8 +19,9 @@ public class SongsController(
 {
     public static SongDto ToDto(Song song) => new(song.Id, song.Name, song.Artist, song.Album);
 
-    // useful for a heartbeat
     [HttpGet("/api/guid")]
+    [EndpointSummary("Generates a guid for testing and/or heartbeat purposes")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult NewGuid()
     {
         var guid = Guid.NewGuid();
@@ -29,7 +30,9 @@ public class SongsController(
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync()
+    [EndpointSummary("Retrieves all songs")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<SongDto[]>> GetAllAsync()
     {
         var query = new QueryAll();
         logger.LogInformation("Received query {query}", query);
@@ -38,6 +41,9 @@ public class SongsController(
     }
 
     [HttpGet("{id}")]
+    [EndpointSummary("Retrieves a single song")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SongDto>> GetSongAsync(Guid id)
     {
         var query = new QuerySpecific(id);
@@ -52,6 +58,9 @@ public class SongsController(
     }
 
     [HttpPost]
+    [EndpointSummary("Updates a Song")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddSongAsync([FromBody] AddSongDto song)
     {
         var command = new AddSongCommand(song.Id, song.Name, song.Artist, song.Album);
@@ -63,11 +72,14 @@ public class SongsController(
             logger.LogError("Song with id {id} already exists", command.Id);
             return BadRequest($"Song with id {command.Id} already exists");
         }
-        var location = Url.Action(nameof(GetSongAsync), "Songs", new { id = command.Id }, Request.Scheme);
+        var location = Url.Action("GetSong", "Songs", new { id = command.Id }, Request.Scheme);
         return Created(location, null);
     }
 
     [HttpPut]
+    [EndpointSummary("Updates a Song")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateSongAsync([FromBody] UpdateSongDto song)
     {
         var command = new UpdateSongCommand(song.Id, song.Name, song.Artist, song.Album);
@@ -75,10 +87,13 @@ public class SongsController(
         var numAffected = await commandHandler.Handle(command);
         if (numAffected == 0)
             return NotFound();
-        return Ok();
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
+    [EndpointSummary("Deletes a Song by id")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteSongAsync(Guid id)
     {
         var command = new DeleteSongCommand(id);
@@ -86,6 +101,6 @@ public class SongsController(
         var numAffected = await commandHandler.Handle(command);
         if (numAffected == 0)
             return NotFound();
-        return Ok();
+        return NoContent();
     }
 }
