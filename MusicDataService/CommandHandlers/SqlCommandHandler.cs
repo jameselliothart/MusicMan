@@ -3,7 +3,7 @@ using MusicDataService.Songs;
 using MusicDataService.Persistence;
 using MusicDataService.Songs.Commands;
 
-namespace MusicDataService.Commands;
+namespace MusicDataService.CommandHandlers;
 
 public class SqlCommandHandler(MusicManContext context) : ICommandHandler, IDisposable
 {

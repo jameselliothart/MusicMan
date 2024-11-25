@@ -1,7 +1,7 @@
 using MusicDataService.Songs;
 using MusicDataService.Songs.Commands;
 
-namespace MusicDataService.Commands;
+namespace MusicDataService.CommandHandlers;
 
 public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
 {

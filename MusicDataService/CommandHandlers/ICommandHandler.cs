@@ -1,6 +1,6 @@
 using MusicDataService.Songs.Commands;
 
-namespace MusicDataService.Commands;
+namespace MusicDataService.CommandHandlers;
 
 public interface ICommandHandler
 {

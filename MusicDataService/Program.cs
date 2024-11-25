@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MusicDataService.Commands;
+using MusicDataService.CommandHandlers;
 using MusicDataService.Persistence;
 using MusicDataService.QueryHandlers;
 
