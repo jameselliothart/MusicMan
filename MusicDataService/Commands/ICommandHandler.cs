@@ -1,3 +1,5 @@
+using MusicDataService.Songs.Commands;
+
 namespace MusicDataService.Commands;
 
 public interface ICommandHandler

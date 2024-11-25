@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MusicDataService.Songs;
 using MusicDataService.Persistence;
+using MusicDataService.Songs.Commands;
 
 namespace MusicDataService.Commands;
 

@@ -1,4 +1,4 @@
-namespace MusicDataService.Commands;
+namespace MusicDataService.Songs.Commands;
 
 public interface ICommand;
 
