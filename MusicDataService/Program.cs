@@ -9,6 +9,7 @@ var AllowDevAccessPolicy = "allowDevAccessPolicy";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IMusicManRepository, MusicManRepository>();
 builder.Services.AddScoped<ICommandHandler, SqlCommandHandler>();
 builder.Services.AddScoped<IQueryHandler, SqlQueryHandler>();
 builder.Services.AddControllers();

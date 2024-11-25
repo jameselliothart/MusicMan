@@ -1,14 +1,11 @@
-using Microsoft.EntityFrameworkCore;
 using MusicDataService.Songs;
 using MusicDataService.Persistence;
 using MusicDataService.Songs.Queries;
 
 namespace MusicDataService.QueryHandlers;
 
-public class SqlQueryHandler(MusicManContext context) : IQueryHandler, IDisposable
+public class SqlQueryHandler(IMusicManRepository repo) : IQueryHandler
 {
-    private readonly MusicManContext _context = context;
-
     public async Task<IEnumerable<Song>> Handle(IQuery query)
     {
         var songs = query switch
@@ -20,15 +17,14 @@ public class SqlQueryHandler(MusicManContext context) : IQueryHandler, IDisposab
         return songs;
     }
 
-    private async Task<IEnumerable<Song>> Get() => await _context.Songs.ToListAsync();
+    private async Task<IEnumerable<Song>> Get() => await repo.GetAll();
 
     // TODO fix this to return single song. Need two Handles: HandleMultiple, HandleSingle
     private async Task<IEnumerable<Song>> Get(QuerySpecific query)
-        => await _context.Songs.Where(s => s.Id == query.Id).ToListAsync();
-
-    public void Dispose()
     {
-        _context?.Dispose();
-        GC.SuppressFinalize(this);
+        var song = await repo.GetById(query.Id);
+        if (song == null)
+            return [];
+        return [song];
     }
 }
