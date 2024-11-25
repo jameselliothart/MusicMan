@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicDataService.Commands;
-using MusicDataService.Songs;
 using MusicDataService.Queries;
 using MusicDataService.Songs.Dtos;
 
 
-namespace MusicDataService.Controllers;
+namespace MusicDataService.Songs.Controllers;
 
 [ApiController]
 [Route("api/songs")]
