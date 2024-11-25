@@ -1,4 +1,4 @@
-namespace MusicDataService.Domain;
+namespace MusicDataService.Songs;
 
 public class Song(Guid id, string name, string artist, string album)
 {

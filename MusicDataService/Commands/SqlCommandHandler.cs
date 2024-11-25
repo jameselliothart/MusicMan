@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MusicDataService.Domain;
+using MusicDataService.Songs;
 using MusicDataService.Persistence;
 
 namespace MusicDataService.Commands;

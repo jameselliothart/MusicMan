@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using MusicDataService.Domain;
+using MusicDataService.Songs;
 
 namespace MusicDataService.Dtos;
 
