@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using MusicDataService.CommandHandlers;
 using MusicDataService.Persistence;
