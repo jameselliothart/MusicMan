@@ -24,6 +24,8 @@ services:
       - DOTNET_ENVIRONMENT=Development
     networks:
       - app-network
+    depends_on:
+      - database
 
   web:
     build:
