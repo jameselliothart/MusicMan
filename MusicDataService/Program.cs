@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MusicDataService.Commands;
 using MusicDataService.Domain;
 using MusicDataService.Queries;
@@ -23,6 +24,10 @@ builder.Services.AddCors(options =>
         }
     );
 });
+builder.Services.AddDbContext<MusicManContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("MusicManDatabase"));
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -41,5 +46,18 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors(AllowDevAccessPolicy);
 app.MapControllers();
+
+using var scope = app.Services.CreateScope();
+
+try
+{
+    var context = scope.ServiceProvider.GetService<MusicManContext>();
+    context!.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    logger?.LogError(ex, "An error occurred while migrating the database.");
+}
 
 app.Run();
