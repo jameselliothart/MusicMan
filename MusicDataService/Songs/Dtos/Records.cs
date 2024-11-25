@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using MusicDataService.Songs;
 
-namespace MusicDataService.Dtos;
+namespace MusicDataService.Songs.Dtos;
 
 public record SongDto(Guid Id, string Name, string Artist, string Album);
 
