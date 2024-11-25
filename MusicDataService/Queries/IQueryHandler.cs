@@ -1,4 +1,5 @@
 using MusicDataService.Songs;
+using MusicDataService.Songs.Queries;
 
 namespace MusicDataService.Queries;
 

@@ -1,4 +1,4 @@
-namespace MusicDataService.Queries;
+namespace MusicDataService.Songs.Queries;
 
 public interface IQuery;
 

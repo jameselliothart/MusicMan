@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicDataService.Commands;
 using MusicDataService.Queries;
+using MusicDataService.Songs.Queries;
 using MusicDataService.Songs.Dtos;
 
 
