@@ -3,7 +3,7 @@ using MusicDataService.Songs;
 using MusicDataService.Persistence;
 using MusicDataService.Songs.Queries;
 
-namespace MusicDataService.Queries;
+namespace MusicDataService.QueryHandlers;
 
 public class SqlQueryHandler(MusicManContext context) : IQueryHandler, IDisposable
 {

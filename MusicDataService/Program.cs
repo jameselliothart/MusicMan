@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MusicDataService.Commands;
 using MusicDataService.Persistence;
-using MusicDataService.Queries;
+using MusicDataService.QueryHandlers;
 
 var AllowDevAccessPolicy = "allowDevAccessPolicy";
 
