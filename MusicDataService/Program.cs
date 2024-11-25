@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using MusicDataService.CommandHandlers;
 using MusicDataService.Persistence;
 using MusicDataService.QueryHandlers;
@@ -29,7 +30,20 @@ builder.Services.AddDbContext<MusicManContext>(options =>
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "MusicMan API",
+        Description = "An ASP.NET Core Web API for keeping track of your favorite songs",
+        Contact = new OpenApiContact
+        {
+            Name = "View the repo",
+            Url = new Uri("https://github.com/jameselliothart/MusicMan")
+        }
+    });
+});
 
 var app = builder.Build();
 
