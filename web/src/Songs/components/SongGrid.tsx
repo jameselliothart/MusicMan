@@ -23,6 +23,7 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
       headerName: '',
       filter: false,
       cellRenderer: (p: ICellRendererParams<ISongRow>) => EditSongButton(p, onEditClick),
+      colId: 'edit',
     },
     {
       field: 'artist',
@@ -52,13 +53,15 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
       field: 'id',
       headerName: '',
       filter: false,
-      cellRenderer: (p: ICellRendererParams<ISongRow>) => UpdateSongButton(p, onUpdate),
+      cellRenderer: (p: ICellRendererParams<ISongRow>) => p.data && p.data.editable ? UpdateSongButton(p, onUpdate) : '',
+      colId: 'update',
     },
     {
       field: 'id',
       headerName: '',
       filter: false,
       cellRenderer: (p: ICellRendererParams<ISongRow>) => DeleteSongButton(p, onDelete),
+      colId: 'delete',
     },
   ]);
 
@@ -73,12 +76,7 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
     <div className={"ag-theme-balham-dark"} style={{ width: '80%', height: '400px' }}>
       <AgGridReact rowData={songs} columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        rowSelection={{
-          mode: 'multiRow',
-          checkboxes: false,
-          headerCheckbox: false,
-          enableClickSelection: true,
-        }}
+        editType="fullRow"
         pagination={true}
         paginationPageSize={20}
         localeText={{ noRowsToShow: noRowsMessage }}
