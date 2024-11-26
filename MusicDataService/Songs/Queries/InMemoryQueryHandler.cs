@@ -1,7 +1,4 @@
-using MusicDataService.Songs;
-using MusicDataService.Songs.Queries;
-
-namespace MusicDataService.QueryHandlers;
+namespace MusicDataService.Songs.Queries;
 
 public class InMemoryQueryHandler(List<Song> songs) : IQueryHandler
 {

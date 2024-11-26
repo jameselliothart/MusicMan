@@ -1,8 +1,6 @@
-using MusicDataService.Songs;
 using MusicDataService.Persistence;
-using MusicDataService.Songs.Queries;
 
-namespace MusicDataService.QueryHandlers;
+namespace MusicDataService.Songs.Queries;
 
 public class SqlQueryHandler(IMusicManRepository repo) : IQueryHandler
 {
