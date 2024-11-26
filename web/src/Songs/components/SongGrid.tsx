@@ -75,11 +75,11 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
   };
 
   return (
-    <div className={"ag-theme-balham-dark"} style={{ width: '80%', height: '400px' }}>
+    <div className={"ag-theme-balham-dark"} style={{ width: '80%', height: '800px' }}>
       <AgGridReact rowData={songs} columnDefs={colDefs}
         defaultColDef={defaultColDef}
         pagination={true}
-        paginationPageSize={20}
+        paginationPageSize={50}
         localeText={{ noRowsToShow: noRowsMessage }}
       />
     </div>
