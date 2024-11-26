@@ -89,19 +89,11 @@ function App() {
     const editableRow = ISongRow.create(clickedSongRow.data, true);
     setSongs((prevSongs) => updateSongRow(prevSongs, editableRow));
 
-    // START WORKAROUND for ag-grid bug https://github.com/ag-grid/ag-grid/issues/7809
-    clickedSongRow.api.refreshCells({
-      force: true,
-      rowNodes: [clickedSongRow.node]
+    // affected by ag-grid bug: https://github.com/ag-grid/ag-grid/issues/7809
+    clickedSongRow.api.startEditingCell({
+      rowIndex: clickedSongRow.node.rowIndex!,
+      colKey: 'artist'
     });
-
-    setTimeout(() => {
-      clickedSongRow.api.startEditingCell({
-        rowIndex: clickedSongRow.node.rowIndex!,
-        colKey: 'artist'
-      });
-    }, 0);
-    // END WORKAROUND
   }
 
   const noRowsMessage = error ?
