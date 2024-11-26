@@ -7,6 +7,8 @@ import { DeleteSongButton } from './DeleteSongButton';
 import { ISongRow, SongGridRowClickHandler, SongGridRowClickHandlerSync } from '../models/song-grid.types';
 import { UpdateSongButton } from './UpdateSongButton';
 import { EditSongButton } from './EditSongButton';
+import { MAX_FIELD_LENGTH } from '../models/song.types';
+import { isValidFieldValue } from '../services/songs.utils';
 
 interface SongGridProps {
   songs: ISongRow[];
@@ -30,7 +32,7 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
       flex: 2,
       editable: p => p.data ? p.data.editable : false,
       cellClassRules: {
-        'bad-cell-content': p => !p.value || p.value.trim().length === 0
+        'bad-cell-content': p => !isValidFieldValue(p.value, MAX_FIELD_LENGTH)
       }
     },
     {
@@ -38,7 +40,7 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
       flex: 2,
       editable: p => p.data ? p.data.editable : false,
       cellClassRules: {
-        'bad-cell-content': p => !p.value || p.value.trim().length === 0
+        'bad-cell-content': p => !isValidFieldValue(p.value, MAX_FIELD_LENGTH)
       }
     },
     {
@@ -46,7 +48,7 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
       flex: 4,
       editable: p => p.data ? p.data.editable : false,
       cellClassRules: {
-        'bad-cell-content': p => !p.value || p.value.trim().length === 0
+        'bad-cell-content': p => !isValidFieldValue(p.value, MAX_FIELD_LENGTH)
       }
     },
     {
