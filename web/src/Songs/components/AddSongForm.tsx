@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import { isValidFieldValue } from '../services/songs.utils';
-import { ISong, newSongId } from '../models/song.types';
+import { ISong, MAX_FIELD_LENGTH, newSongId } from '../models/song.types';
 
 interface AddSongFormProps {
   onSave: (song: ISong) => Promise<void>;
@@ -24,8 +24,6 @@ export const AddSongForm = ({ onSave }: AddSongFormProps) => {
     name: true,
   });
 
-  const maxFieldLength = 10;
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -39,9 +37,9 @@ export const AddSongForm = ({ onSave }: AddSongFormProps) => {
 
   React.useEffect(() => {
     const errors = {
-      artist: !isValidFieldValue(artist, maxFieldLength),
-      album: !isValidFieldValue(album, maxFieldLength),
-      name: !isValidFieldValue(name, maxFieldLength),
+      artist: !isValidFieldValue(artist, MAX_FIELD_LENGTH),
+      album: !isValidFieldValue(album, MAX_FIELD_LENGTH),
+      name: !isValidFieldValue(name, MAX_FIELD_LENGTH),
     }
     setHasErrors(errors)
   }, [open, artist, album, name]);
@@ -91,10 +89,10 @@ export const AddSongForm = ({ onSave }: AddSongFormProps) => {
             onChange={e => handleChange(e, setArtist)}
             fullWidth
             variant="standard"
-            error={artist.length > maxFieldLength}
+            error={artist.length > MAX_FIELD_LENGTH}
             helperText={
-              artist.length > maxFieldLength
-                ? `Exceeds maximum of ${maxFieldLength} characters by ${(artist.length - maxFieldLength)}`
+              artist.length > MAX_FIELD_LENGTH
+                ? `Exceeds maximum of ${MAX_FIELD_LENGTH} characters by ${(artist.length - MAX_FIELD_LENGTH)}`
                 : ''
             }
           />
@@ -108,10 +106,10 @@ export const AddSongForm = ({ onSave }: AddSongFormProps) => {
             onChange={e => handleChange(e, setAlbum)}
             fullWidth
             variant="standard"
-            error={album.length > maxFieldLength}
+            error={album.length > MAX_FIELD_LENGTH}
             helperText={
-              album.length > maxFieldLength
-                ? `Exceeds maximum of ${maxFieldLength} characters by ${(album.length - maxFieldLength)}`
+              album.length > MAX_FIELD_LENGTH
+                ? `Exceeds maximum of ${MAX_FIELD_LENGTH} characters by ${(album.length - MAX_FIELD_LENGTH)}`
                 : ''
             }
           />
@@ -125,10 +123,10 @@ export const AddSongForm = ({ onSave }: AddSongFormProps) => {
             onChange={e => handleChange(e, setName)}
             fullWidth
             variant="standard"
-            error={name.length > maxFieldLength}
+            error={name.length > MAX_FIELD_LENGTH}
             helperText={
-              name.length > maxFieldLength
-                ? `Exceeds maximum of ${maxFieldLength} characters by ${(name.length - maxFieldLength)}`
+              name.length > MAX_FIELD_LENGTH
+                ? `Exceeds maximum of ${MAX_FIELD_LENGTH} characters by ${(name.length - MAX_FIELD_LENGTH)}`
                 : ''
             }
           />
