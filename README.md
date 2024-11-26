@@ -6,7 +6,7 @@ Developed on Ubuntu 22.04.5 LTS.
 
 ## Running
 
-In the project root execute
+In the project root execute:
 ```sh
 docker-compose up --build
 ```
@@ -25,17 +25,17 @@ OpenAPI / Swagger documentation for  the data service will be available at http:
 
 #### Functional
 
-- On opening, retrieves songs from the underlying datastore
+- On opening, the page retrieves songs from the underlying datastore
 - Add songs with the 'Add a song' + button
-- Delete songs with the Trash icon
+- Delete songs with the Trash icon button
 - Update songs:
-  1. Enable editing with the Pencil button on the left of each row
+  1. Enable editing with the Pencil icon button on the left of each row
   2. Start typing: The adjoining Artist cell is immediately focused and able to receive edits
     - Unfortunately there is a [bug in ag-grid](https://github.com/ag-grid/ag-grid/issues/7809) which makes this UX clunky (discovered late in this project)
     - The intended effect is cell double-click styling on the neighboring Artist cell
     - The trick to "solve" the issue creates subtle and unacceptable bugs
   3. Tab navigate or single- or double- click into any cell of the row to make further edits
-  4. Click the Save (floppy disk) button
+  4. Click the Save (floppy disk) icon button
 - All fields are required, must be non-whitespace, and not longer than 100 characters
 - Invalid field values are highlighted
 
