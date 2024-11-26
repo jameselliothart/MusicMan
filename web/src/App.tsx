@@ -94,6 +94,7 @@ function App() {
     const editableRow = ISongRow.create(clickedSongRow.data, true);
     setSongs((prevSongs) => updateSongRow(prevSongs, editableRow));
 
+    // this is not properly entering the cell, though it is focused to begin typing
     // affected by ag-grid bug: https://github.com/ag-grid/ag-grid/issues/7809
     clickedSongRow.api.startEditingCell({
       rowIndex: clickedSongRow.node.rowIndex!,
