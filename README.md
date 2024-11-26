@@ -76,6 +76,7 @@ Some design details are highlighted below.
 - Configuring Entity Framework POCO code-first entities with `OnModelCreating`
   - Maps the domain (i.e. `Song`) to the persistence layer without contamination (c.f. [MS docs](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-implementation-entity-framework-core#implement-custom-repositories-with-entity-framework-core))
   - Not a big concern in a CRUD app devoid of business logic but a good principle nonetheless
-- Use of Result types
+- Use of Result and Error types
+  - Improves control flow and code readability
   - Allows gracefully handling known possible Errors instead of throwing Exceptions
   - A common approach in functional programming for good reason
