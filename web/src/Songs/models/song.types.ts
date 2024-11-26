@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export const MAX_FIELD_LENGTH = 10;
+export const MAX_FIELD_LENGTH = 100;
 
 export type UUIDv4 = string;
 type Artist = string;
