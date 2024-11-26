@@ -1,8 +1,9 @@
 using MusicDataService.Songs.Commands;
+using MusicDataService.Utils;
 
 namespace MusicDataService.CommandHandlers;
 
 public interface ICommandHandler
 {
-    Task<int> Handle(ICommand command);
+    Task<Result<int>> Handle(ICommand command);
 }

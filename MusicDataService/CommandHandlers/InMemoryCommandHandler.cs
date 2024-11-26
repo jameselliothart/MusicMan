@@ -1,5 +1,6 @@
 using MusicDataService.Songs;
 using MusicDataService.Songs.Commands;
+using MusicDataService.Utils;
 
 namespace MusicDataService.CommandHandlers;
 
@@ -7,7 +8,7 @@ public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
 {
     private readonly List<Song> _songs = songs;
 
-    public Task<int> Handle(ICommand command)
+    public Task<Result<int>> Handle(ICommand command)
     {
         var result = command switch
         {
@@ -19,29 +20,29 @@ public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
         return Task.FromResult(result);
     }
 
-    private int Add(AddSongCommand command)
+    private Result<int> Add(AddSongCommand command)
     {
         var song = new Song(command.Id, command.Name, command.Artist, command.Album);
         _songs.Add(song);
-        return 1;
+        return Result.Success(1);
     }
 
-    private int Update(UpdateSongCommand command)
+    private Result<int> Update(UpdateSongCommand command)
     {
         var songToUpdate = _songs.Find(song => song.Id == command.Id);
         if (songToUpdate == null)
         {
-            return 0;
+            return Result.Success(0);
         }
         var updatedSong = new Song(command.Id, command.Name, command.Artist, command.Album);
         _songs.Remove(songToUpdate);
         _songs.Add(updatedSong);
-        return 1;
+        return Result.Success(1);
     }
 
-    private int Delete(DeleteSongCommand command)
+    private Result<int> Delete(DeleteSongCommand command)
     {
         var removedCount = _songs.RemoveAll(song => song.Id == command.Id);
-        return removedCount;
+        return Result.Success(removedCount);
     }
 }

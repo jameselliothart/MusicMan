@@ -4,6 +4,7 @@ using MusicDataService.Songs.Queries;
 using MusicDataService.Songs.Dtos;
 using MusicDataService.QueryHandlers;
 using MusicDataService.CommandHandlers;
+using MusicDataService.Utils;
 
 
 namespace MusicDataService.Songs.Controllers;
@@ -65,42 +66,73 @@ public class SongsController(
     {
         var command = new AddSongCommand(song.Id, song.Name, song.Artist, song.Album);
         logger.LogInformation("Received command {command}", command);
-        var addedCount = await commandHandler.Handle(command);
-        // TODO use Result
-        if (addedCount == 0)
+        var addResult = await commandHandler.Handle(command);
+        if (addResult.IsSuccess)
         {
-            logger.LogError("Song with id {id} already exists", command.Id);
-            return BadRequest($"Song with id {command.Id} already exists");
+            var location = Url.Action("GetSong", "Songs", new { id = command.Id }, Request.Scheme);
+            return Created(location, null);
         }
-        var location = Url.Action("GetSong", "Songs", new { id = command.Id }, Request.Scheme);
-        return Created(location, null);
+        else
+        {
+            if (addResult.Error.Code == Error.DUPLICATE)
+            {
+                logger.LogError("Song with id {id} already exists", command.Id);
+                return BadRequest($"Song with id {command.Id} already exists");
+            }
+            logger.LogError("Bad request for id {id}: {error}", command.Id, addResult.Error.Message);
+            return BadRequest($"Bad request for id {command.Id}: {addResult.Error.Message}");
+        }
     }
 
     [HttpPut]
     [EndpointSummary("Updates a Song")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateSongAsync([FromBody] UpdateSongDto song)
     {
         var command = new UpdateSongCommand(song.Id, song.Name, song.Artist, song.Album);
         logger.LogInformation("Received command {command}", command);
-        var numAffected = await commandHandler.Handle(command);
-        if (numAffected == 0)
-            return NotFound();
-        return NoContent();
+        var updateResult = await commandHandler.Handle(command);
+        if (updateResult.IsSuccess)
+        {
+            return NoContent();
+        }
+        else
+        {
+            if (updateResult.Error.Code == Error.NOT_FOUND)
+            {
+                logger.LogError("Failed to find id {id}", command.Id);
+                return NotFound();
+            }
+            logger.LogError("Bad request for id {id}: {error}", command.Id, updateResult.Error.Message);
+            return BadRequest($"Bad request for id {command.Id}: {updateResult.Error.Message}");
+        }
     }
 
     [HttpDelete("{id}")]
     [EndpointSummary("Deletes a Song by id")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteSongAsync(Guid id)
     {
         var command = new DeleteSongCommand(id);
         logger.LogInformation("Received command {command}", command);
-        var numAffected = await commandHandler.Handle(command);
-        if (numAffected == 0)
-            return NotFound();
-        return NoContent();
+        var deleteResult = await commandHandler.Handle(command);
+        if (deleteResult.IsSuccess)
+        {
+            return NoContent();
+        }
+        else
+        {
+            if (deleteResult.Error.Code == Error.NOT_FOUND)
+            {
+                logger.LogError("Failed to find id {id}", command.Id);
+                return NotFound();
+            }
+            logger.LogError("Bad request for id {id}: {error}", command.Id, deleteResult.Error.Message);
+            return BadRequest($"Bad request for id {command.Id}: {deleteResult.Error.Message}");
+        }
     }
 }

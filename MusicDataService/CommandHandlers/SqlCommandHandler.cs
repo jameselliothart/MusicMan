@@ -1,13 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using MusicDataService.Songs;
 using MusicDataService.Persistence;
 using MusicDataService.Songs.Commands;
+using MusicDataService.Utils;
 
 namespace MusicDataService.CommandHandlers;
 
 public class SqlCommandHandler(IMusicManRepository repo) : ICommandHandler
 {
-    public async Task<int> Handle(ICommand command)
+    public async Task<Result<int>> Handle(ICommand command)
     {
         var affectedCount = command switch
         {
@@ -19,24 +19,26 @@ public class SqlCommandHandler(IMusicManRepository repo) : ICommandHandler
         return affectedCount;
     }
 
-    private async Task<int> Add(AddSongCommand command)
+    private async Task<Result<int>> Add(AddSongCommand command)
     {
         var song = new Song(command.Id, command.Name, command.Artist, command.Album);
-        var addedCount = await repo.Add(song);
-        return addedCount;
+        var addResult = await repo.Add(song);
+        return addResult;
     }
 
-    private async Task<int> Update(UpdateSongCommand command)
+    private async Task<Result<int>> Update(UpdateSongCommand command)
     {
         var updatedSong = new Song(command.Id, command.Name, command.Artist, command.Album);
         var updatedCount = await repo.Update(updatedSong);
-        return updatedCount;
+        var updateResult = updatedCount == 0 ? Result.Failure<int>(Error.NotFound()) : Result.Success(updatedCount);
+        return updateResult;
     }
 
-    private async Task<int> Delete(DeleteSongCommand command)
+    private async Task<Result<int>> Delete(DeleteSongCommand command)
     {
         var removedCount = await repo.Delete(command.Id);
-        return removedCount;
+        var removeResult = removedCount == 0 ? Result.Failure<int>(Error.NotFound()) : Result.Success(removedCount);
+        return removeResult;
     }
 
 }
