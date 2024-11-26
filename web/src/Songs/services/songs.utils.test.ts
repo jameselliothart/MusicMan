@@ -4,7 +4,7 @@ import { isValidFieldValue, updateSongRow } from "./songs.utils";
 describe('isValidFieldValue', () => {
   const maxFieldLength = 4;
 
-  it('should fail for whitespace', () => {
+  it('should return false for whitespace', () => {
     const value = ' ';
 
     const actual = isValidFieldValue(value, maxFieldLength);
@@ -12,8 +12,24 @@ describe('isValidFieldValue', () => {
     expect(actual).toBeFalsy();
   });
 
-  it('should fail for values longer than the specified maximum length', () => {
+  it('should return false for empty string', () => {
+    const value = '';
+
+    const actual = isValidFieldValue(value, maxFieldLength);
+
+    expect(actual).toBeFalsy();
+  });
+
+  it('should return false for values longer than the specified maximum length', () => {
     const value = '12345';
+
+    const actual = isValidFieldValue(value, maxFieldLength);
+
+    expect(actual).toBeFalsy();
+  });
+
+  it('should return false for null values', () => {
+    const value = null;
 
     const actual = isValidFieldValue(value, maxFieldLength);
 

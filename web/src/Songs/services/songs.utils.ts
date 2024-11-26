@@ -1,8 +1,13 @@
 import { ISongRow } from "../models/song-grid.types";
 import { ISong, MAX_FIELD_LENGTH } from "../models/song.types";
 
-export const isValidFieldValue = (value: string, maxFieldLength: number) => {
-  return value?.length <= maxFieldLength && value?.trim().length > 0;
+type MaybeString = string | null
+
+export const isValidFieldValue = (value: MaybeString, maxFieldLength: number) => {
+  // value will be trimmed when Song is created to remove whitespace
+  const length = value?.trim().length ?? Number.POSITIVE_INFINITY;
+  const trimmedLength = value?.trim().length ?? 0;
+  return length <= maxFieldLength && trimmedLength > 0;
 };
 
 export const updateSongRow = (songs: ISongRow[], updatedSong: ISongRow): ISongRow[] => {
