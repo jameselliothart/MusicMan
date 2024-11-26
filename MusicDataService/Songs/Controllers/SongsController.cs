@@ -35,7 +35,7 @@ public class SongsController(
     {
         var query = new QueryAll();
         logger.LogInformation("Received query {query}", query);
-        var result = await queryHandler.Handle(query);
+        var result = await queryHandler.HandleAsync(query);
         return Ok(result.Select(ToDto).ToList());
     }
 
@@ -47,7 +47,7 @@ public class SongsController(
     {
         var query = new QueryOne(id);
         logger.LogInformation("Received query {query}", query);
-        var result = await queryHandler.Handle(query);
+        var result = await queryHandler.HandleAsync(query);
         if (result is null)
         {
             logger.LogWarning("Unable to find song id '{id}'", id);
@@ -64,7 +64,7 @@ public class SongsController(
     {
         var command = new AddSongCommand(song.Id, song.Name, song.Artist, song.Album);
         logger.LogInformation("Received command {command}", command);
-        var addResult = await commandHandler.Handle(command);
+        var addResult = await commandHandler.HandleAsync(command);
         if (addResult.IsSuccess)
         {
             var location = Url.Action("GetSong", "Songs", new { id = command.Id }, Request.Scheme);
@@ -91,7 +91,7 @@ public class SongsController(
     {
         var command = new UpdateSongCommand(song.Id, song.Name, song.Artist, song.Album);
         logger.LogInformation("Received command {command}", command);
-        var updateResult = await commandHandler.Handle(command);
+        var updateResult = await commandHandler.HandleAsync(command);
         if (updateResult.IsSuccess)
         {
             return NoContent();
@@ -117,7 +117,7 @@ public class SongsController(
     {
         var command = new DeleteSongCommand(id);
         logger.LogInformation("Received command {command}", command);
-        var deleteResult = await commandHandler.Handle(command);
+        var deleteResult = await commandHandler.HandleAsync(command);
         if (deleteResult.IsSuccess)
         {
             return NoContent();

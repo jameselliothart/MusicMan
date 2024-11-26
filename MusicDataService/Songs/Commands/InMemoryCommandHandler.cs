@@ -6,14 +6,14 @@ public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
 {
     private readonly List<Song> _songs = songs;
 
-    public async Task<Result<int>> Handle(AddSongCommand command)
+    public async Task<Result<int>> HandleAsync(AddSongCommand command)
     {
         var song = new Song(command.Id, command.Name, command.Artist, command.Album);
         _songs.Add(song);
         return await Task.FromResult(Result.Success(1));
     }
 
-    public async Task<Result<int>> Handle(UpdateSongCommand command)
+    public async Task<Result<int>> HandleAsync(UpdateSongCommand command)
     {
         var songToUpdate = _songs.Find(song => song.Id == command.Id);
         if (songToUpdate == null)
@@ -26,7 +26,7 @@ public class InMemoryCommandHandler(List<Song> songs) : ICommandHandler
         return Result.Success(1);
     }
 
-    public async Task<Result<int>> Handle(DeleteSongCommand command)
+    public async Task<Result<int>> HandleAsync(DeleteSongCommand command)
     {
         var removedCount = _songs.RemoveAll(song => song.Id == command.Id);
         return await Task.FromResult(Result.Success(removedCount));
