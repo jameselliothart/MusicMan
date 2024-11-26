@@ -76,7 +76,6 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
     <div className={"ag-theme-balham-dark"} style={{ width: '80%', height: '400px' }}>
       <AgGridReact rowData={songs} columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        editType="fullRow"
         pagination={true}
         paginationPageSize={20}
         localeText={{ noRowsToShow: noRowsMessage }}
