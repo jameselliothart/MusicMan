@@ -1,9 +1,7 @@
-using MusicDataService.Songs;
 using MusicDataService.Persistence;
-using MusicDataService.Songs.Commands;
 using MusicDataService.Utils;
 
-namespace MusicDataService.CommandHandlers;
+namespace MusicDataService.Songs.Commands;
 
 public class SqlCommandHandler(IMusicManRepository repo) : ICommandHandler
 {
