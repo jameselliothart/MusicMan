@@ -60,7 +60,8 @@ OpenAPI / Swagger documentation for  the data service will be available at http:
 ## Design Decisions
 
 In general, this project tries to follow Domain Driven Design (DDD) principles.
-The structure of both front and back end components communicates that they are centered around the management of Songs by placing the standard folders (Controllers, components, models, etc.) underneath the domain entity (in this case only Song) to which they are related.
+The structure of both front and back end components communicates that they are centered around the management of Songs by placing the standard technical folders (Controllers, components, models, etc.) underneath the domain entity (in this case only Song) to which they are related.
+
 This organization would be mirrored if the application expanded to model Artists and Albums as well in the future, allowing a correspondence between the structure of the business domain and the structure of the code.
 The use of this [ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html) eases communication between developers and users.
 
