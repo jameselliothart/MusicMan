@@ -5,5 +5,7 @@ namespace MusicDataService.CommandHandlers;
 
 public interface ICommandHandler
 {
-    Task<Result<int>> Handle(ICommand command);
+    public Task<Result<int>> Handle(AddSongCommand command);
+    public Task<Result<int>> Handle(UpdateSongCommand command);
+    public Task<Result<int>> Handle(DeleteSongCommand command);
 }
