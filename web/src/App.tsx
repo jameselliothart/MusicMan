@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { SongGrid } from './Songs/components/SongGrid';
-import { ISong } from './Songs/models/song.types';
+import { ISong, MAX_FIELD_LENGTH } from './Songs/models/song.types';
 import { addSong, deleteSong, fetchSongs, updateSong } from './Songs/services/songs.api';
 import { ISongRow, SongGridRowClickHandler, SongGridRowClickHandlerSync } from './Songs/models/song-grid.types';
 import { toast, ToastContainer } from 'react-toastify';
 import { AddSongForm } from './Songs/components/AddSongForm';
-import { updateSongRow } from './Songs/services/songs.utils';
+import { isValidSong, updateSongRow } from './Songs/services/songs.utils';
 
 function App() {
   const [songs, setSongs] = useState<ISongRow[]>([]);
@@ -68,9 +68,14 @@ function App() {
     }
     const updatedSong: ISong = {
       id: updatedSongRow.data.id,
-      artist: updatedSongRow.data.artist,
-      album: updatedSongRow.data.album,
-      name: updatedSongRow.data.name,
+      artist: updatedSongRow.data.artist?.trim(),
+      album: updatedSongRow.data.album?.trim(),
+      name: updatedSongRow.data.name?.trim(),
+    }
+    if (!isValidSong(updatedSong))
+    {
+      toast.error(`Bad song data: Artist / Album / Name are required and must be less than ${MAX_FIELD_LENGTH} characters`);
+      return;
     }
     const updateResult = await updateSong(updatedSong);
     if (updateResult.ok) {
