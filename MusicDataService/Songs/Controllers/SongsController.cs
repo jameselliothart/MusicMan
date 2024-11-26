@@ -47,15 +47,15 @@ public class SongsController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SongDto>> GetSongAsync(Guid id)
     {
-        var query = new QuerySpecific(id);
+        var query = new QueryOne(id);
         logger.LogInformation("Received query {query}", query);
         var result = await queryHandler.Handle(query);
-        if (!result.Any())
+        if (result is null)
         {
             logger.LogWarning("Unable to find song id '{id}'", id);
             return NotFound();
         }
-        return Ok(result.Select(ToDto).First());
+        return Ok(ToDto(result));
     }
 
     [HttpPost]

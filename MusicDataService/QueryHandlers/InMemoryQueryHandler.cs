@@ -7,18 +7,7 @@ public class InMemoryQueryHandler(List<Song> songs) : IQueryHandler
 {
     private readonly List<Song> _songs = songs;
 
-    public Task<IEnumerable<Song>> Handle(IQuery query)
-    {
-        var result = query switch
-        {
-            QueryAll => Get(),
-            QuerySpecific q => Get(q),
-            _ => throw new ArgumentOutOfRangeException(nameof(query), $"Unexpected query value: {query}"),
-        };
-        return Task.FromResult(result);
-    }
+    public async Task<IEnumerable<Song>> Handle(QueryAll _) => await Task.FromResult(_songs);
 
-    private IEnumerable<Song> Get() => _songs;
-
-    private IEnumerable<Song> Get(QuerySpecific query) => _songs.FindAll(q => q.Id == query.Id);
+    public async Task<Song?> Handle(QueryOne query) => await Task.FromResult(_songs.Find(q => q.Id == query.Id));
 }

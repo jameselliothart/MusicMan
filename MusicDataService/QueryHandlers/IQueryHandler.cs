@@ -5,5 +5,6 @@ namespace MusicDataService.QueryHandlers;
 
 public interface IQueryHandler
 {
-    Task<IEnumerable<Song>> Handle(IQuery query);
+    public Task<IEnumerable<Song>> Handle(QueryAll query);
+    public Task<Song?> Handle(QueryOne query);
 }
