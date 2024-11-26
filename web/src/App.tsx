@@ -57,7 +57,8 @@ function App() {
       setSongs((prevSongs) => prevSongs.concat(ISongRow.create(song)));
       toast.success(`Added ${song.artist} - ${song.album} - ${song.name}`)
     } else {
-      toast.error(`${addResult.error}`);
+      console.log(`${addResult.error}`);
+      toast.error("Uh oh that didn't work. Please try later.")
     }
   }
 
