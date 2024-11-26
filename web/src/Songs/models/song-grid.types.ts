@@ -11,5 +11,5 @@ export namespace ISongRow {
   };
 }
 
-export type SongGridRowClickHandler = (params: ICellRendererParams<ISongRow>) => Promise<void>;
-export type SongGridRowClickHandlerSync = (params: ICellRendererParams<ISongRow>) => void;
+export type SongGridRowClickHandlerAsync = (params: ICellRendererParams<ISongRow>) => Promise<void>;
+export type SongGridRowClickHandler = (params: ICellRendererParams<ISongRow>) => void;

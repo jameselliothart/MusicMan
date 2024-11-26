@@ -4,7 +4,7 @@ import "ag-grid-community/styles/ag-theme-balham.css";
 import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { useState } from 'react';
 import { DeleteSongButton } from './DeleteSongButton';
-import { ISongRow, SongGridRowClickHandler, SongGridRowClickHandlerSync } from '../models/song-grid.types';
+import { ISongRow, SongGridRowClickHandlerAsync, SongGridRowClickHandler } from '../models/song-grid.types';
 import { UpdateSongButton } from './UpdateSongButton';
 import { EditSongButton } from './EditSongButton';
 import { MAX_FIELD_LENGTH } from '../models/song.types';
@@ -13,15 +13,16 @@ import { isValidFieldValue } from '../services/songs.utils';
 interface SongGridProps {
   songs: ISongRow[];
   noRowsMessage: string;
-  onDelete: SongGridRowClickHandler;
-  onUpdate: SongGridRowClickHandler;
-  onEditClick: SongGridRowClickHandlerSync;
+  onDelete: SongGridRowClickHandlerAsync;
+  onUpdate: SongGridRowClickHandlerAsync;
+  onEditClick: SongGridRowClickHandler;
 }
 
-export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick}: SongGridProps) => {
+export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick }: SongGridProps) => {
 
   const [colDefs] = useState<ColDef<ISongRow>[]>([
-    { field: 'id',
+    {
+      field: 'id',
       headerName: '',
       filter: false,
       cellRenderer: (p: ICellRendererParams<ISongRow>) => EditSongButton(p, onEditClick),

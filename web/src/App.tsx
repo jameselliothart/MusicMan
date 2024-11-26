@@ -4,7 +4,7 @@ import './App.css';
 import { SongGrid } from './Songs/components/SongGrid';
 import { ISong, MAX_FIELD_LENGTH } from './Songs/models/song.types';
 import { addSong, deleteSong, fetchSongs, updateSong } from './Songs/services/songs.api';
-import { ISongRow, SongGridRowClickHandler, SongGridRowClickHandlerSync } from './Songs/models/song-grid.types';
+import { ISongRow, SongGridRowClickHandlerAsync, SongGridRowClickHandler } from './Songs/models/song-grid.types';
 import { toast, ToastContainer } from 'react-toastify';
 import { AddSongForm } from './Songs/components/AddSongForm';
 import { isValidSong, updateSongRow } from './Songs/services/songs.utils';
@@ -36,7 +36,7 @@ function App() {
     loadSongs();
   }, []);
 
-  const handleDelete: SongGridRowClickHandler = async (songRow) => {
+  const handleDelete: SongGridRowClickHandlerAsync = async (songRow) => {
     if (!songRow.data) {
       console.error('No song row data received');
       return;
@@ -61,7 +61,7 @@ function App() {
     }
   }
 
-  const handleUpdate: SongGridRowClickHandler = async (updatedSongRow) => {
+  const handleUpdate: SongGridRowClickHandlerAsync = async (updatedSongRow) => {
     if (!updatedSongRow.data) {
       console.error('No song row data received');
       return;
@@ -72,8 +72,7 @@ function App() {
       album: updatedSongRow.data.album?.trim(),
       name: updatedSongRow.data.name?.trim(),
     }
-    if (!isValidSong(updatedSong))
-    {
+    if (!isValidSong(updatedSong)) {
       toast.error(`Bad song data: Artist / Album / Name are required and must be less than ${MAX_FIELD_LENGTH} characters`);
       return;
     }
@@ -86,7 +85,7 @@ function App() {
     }
   }
 
-  const handleEditClick: SongGridRowClickHandlerSync = clickedSongRow => {
+  const handleEditClick: SongGridRowClickHandler = clickedSongRow => {
     if (!clickedSongRow.data) {
       console.error('No song row data received');
       return;
