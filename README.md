@@ -1,6 +1,6 @@
 # MusicMan
 
-A music data management app allowing users to organize and track information related to music artists.
+A music data management app allowing users to organize and track information related to their favorite songs.
 
 Developed on Ubuntu 22.04.5 LTS.
 
