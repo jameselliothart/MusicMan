@@ -57,7 +57,7 @@ public class SongsController(
     }
 
     [HttpPost]
-    [EndpointSummary("Updates a Song")]
+    [EndpointSummary("Adds a Song")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddSongAsync([FromBody] AddSongDto song)
