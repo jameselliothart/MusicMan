@@ -49,7 +49,7 @@ OpenAPI / Swagger documentation for  the data service will be available at http:
 
 #### PostgreSQL Integration
 
-- Uses EF Core to facilitate PostgreSQL access
+- Uses the ORM Entity Framework Core to facilitate PostgreSQL access
 - On startup, the service executes EF database migrations
   - Currently, this is limited to the database and `songs` table creation
   - In a production application, this design would require careful consideration of tradeoffs
