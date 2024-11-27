@@ -87,15 +87,17 @@ function App() {
   }
 
   const handleEditClick: SongGridRowClickHandler = clickedSongRow => {
-    if (!clickedSongRow.data) {
-      console.error('No song row data received');
-      return;
-    }
-    const editableRow = ISongRow.create(clickedSongRow.data, true);
-    setSongs((prevSongs) => updateSongRow(prevSongs, editableRow));
+    // enables editing on the clicked Song row
+    // getRowId property required on the AgGridReact for getRowNode to work
+    const rowNode = clickedSongRow.api.getRowNode(clickedSongRow.data!.id)!;
+    const newRowData: ISongRow = { ...clickedSongRow.data!, editable: true};
+    rowNode.updateData(newRowData);
+    clickedSongRow.api.refreshCells({
+      force: true,
+      rowNodes: [rowNode]
+    })
 
-    // this is not properly entering the cell, though it is focused to begin typing
-    // affected by ag-grid bug: https://github.com/ag-grid/ag-grid/issues/7809
+    // starts editing in the row's Artist cell
     clickedSongRow.api.startEditingCell({
       rowIndex: clickedSongRow.node.rowIndex!,
       colKey: 'artist'

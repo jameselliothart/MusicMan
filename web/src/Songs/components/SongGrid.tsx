@@ -82,6 +82,7 @@ export const SongGrid = ({ songs, noRowsMessage, onDelete, onUpdate, onEditClick
         pagination={true}
         paginationPageSize={50}
         localeText={{ noRowsToShow: noRowsMessage }}
+        getRowId={p => p.data.id}
       />
     </div>
   );
